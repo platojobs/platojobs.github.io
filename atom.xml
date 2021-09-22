@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>https://github.com/platojobs</id>
+    <id>https://platojobs.github.io</id>
     <title>PlatoJobs&apos; Blog</title>
-    <updated>2021-09-22T07:38:58.397Z</updated>
+    <updated>2021-09-22T10:17:06.113Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
-    <link rel="alternate" href="https://github.com/platojobs"/>
-    <link rel="self" href="https://github.com/platojobs/atom.xml"/>
+    <link rel="alternate" href="https://platojobs.github.io"/>
+    <link rel="self" href="https://platojobs.github.io/atom.xml"/>
     <subtitle>见天地、见众生、见自己</subtitle>
-    <logo>https://github.com/platojobs/images/avatar.png</logo>
-    <icon>https://github.com/platojobs/favicon.ico</icon>
+    <logo>https://platojobs.github.io/images/avatar.png</logo>
+    <icon>https://platojobs.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, PlatoJobs&apos; Blog</rights>
     <entry>
         <title type="html"><![CDATA[Hello Gridea]]></title>
-        <id>https://github.com/platojobs/post/hello-gridea/</id>
-        <link href="https://github.com/platojobs/post/hello-gridea/">
+        <id>https://platojobs.github.io/post/hello-gridea/</id>
+        <link href="https://platojobs.github.io/post/hello-gridea/">
         </link>
         <updated>2018-12-11T16:00:00.000Z</updated>
         <summary type="html"><![CDATA[<p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
