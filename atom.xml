@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://platojobs.github.io</id>
     <title>PlatoJobs&apos; Blog</title>
-    <updated>2021-09-23T01:31:53.217Z</updated>
+    <updated>2021-09-23T02:30:49.601Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://platojobs.github.io"/>
     <link rel="self" href="https://platojobs.github.io/atom.xml"/>
@@ -10,6 +10,33 @@
     <logo>https://platojobs.github.io/images/avatar.png</logo>
     <icon>https://platojobs.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, PlatoJobs&apos; Blog</rights>
+    <entry>
+        <title type="html"><![CDATA[职场实习攻略]]></title>
+        <id>https://platojobs.github.io/post/zhi-chang-shi-xi-gong-lue/</id>
+        <link href="https://platojobs.github.io/post/zhi-chang-shi-xi-gong-lue/">
+        </link>
+        <updated>2021-09-23T01:54:24.000Z</updated>
+        <summary type="html"><![CDATA[<blockquote>
+<p>相信很多同学在第一次到企业实习的时候都会不知所措，心里激情满满，却发现自己大脑是晕晕的。别，小二这就给您上菜，听我慢慢道来。</p>
+</blockquote>
+<figure data-type="image" tabindex="1"><img src="https://img1.baidu.com/it/u=2213696144,2142549661&amp;fm=26&amp;fmt=auto" alt="" loading="lazy"></figure>
+<h3 id="开篇之前问题">开篇之前问题</h3>
+<p><code>问：我是一名应届生，我应该如何做职业规划？</code></p>
+<blockquote>
+<p>答：职业规划和理财很像，首先你得有才。所以对应届生来说，尽可能提升自己的能力才是当务之急。在行业选择上，可以选择一些正在得到大量投资的行业，通常而言，它们代表了未来的发展方向，比如云计算、大数据、移动互联网、智能硬件、共享经济、互联网金融等。</p>
+</blockquote>
+]]></summary>
+        <content type="html"><![CDATA[<blockquote>
+<p>相信很多同学在第一次到企业实习的时候都会不知所措，心里激情满满，却发现自己大脑是晕晕的。别，小二这就给您上菜，听我慢慢道来。</p>
+</blockquote>
+<figure data-type="image" tabindex="1"><img src="https://img1.baidu.com/it/u=2213696144,2142549661&amp;fm=26&amp;fmt=auto" alt="" loading="lazy"></figure>
+<h3 id="开篇之前问题">开篇之前问题</h3>
+<p><code>问：我是一名应届生，我应该如何做职业规划？</code></p>
+<blockquote>
+<p>答：职业规划和理财很像，首先你得有才。所以对应届生来说，尽可能提升自己的能力才是当务之急。在行业选择上，可以选择一些正在得到大量投资的行业，通常而言，它们代表了未来的发展方向，比如云计算、大数据、移动互联网、智能硬件、共享经济、互联网金融等。</p>
+</blockquote>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[生活小窍门]]></title>
         <id>https://platojobs.github.io/post/sheng-huo-xiao-qiao-men/</id>
