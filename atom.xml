@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://platojobs.github.io</id>
     <title>PlatoJobs&apos; Blog</title>
-    <updated>2021-10-09T08:59:11.581Z</updated>
+    <updated>2021-10-09T09:39:07.431Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://platojobs.github.io"/>
     <link rel="self" href="https://platojobs.github.io/atom.xml"/>
@@ -10,6 +10,37 @@
     <logo>https://platojobs.github.io/images/avatar.png</logo>
     <icon>https://platojobs.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, PlatoJobs&apos; Blog</rights>
+    <entry>
+        <title type="html"><![CDATA[init 构造函数在struct与class中的区别]]></title>
+        <id>https://platojobs.github.io/post/init-gou-zao-han-shu-zai-struct-yu-class-zhong-de-qu-bie/</id>
+        <link href="https://platojobs.github.io/post/init-gou-zao-han-shu-zai-struct-yu-class-zhong-de-qu-bie/">
+        </link>
+        <updated>2021-10-09T09:37:08.000Z</updated>
+        <summary type="html"><![CDATA[<h1 id="init-构造函数在struct与class中的区别">init 构造函数在struct与class中的区别</h1>
+<h3 id="1-swift中的struct与class的异同">1. swift中的struct与class的异同</h3>
+<h4 id="11-struct与class相同点">1.1 struct与class相同点</h4>
+<ul>
+<li>定义属性用于存储值</li>
+<li>定义方法用于提供功能</li>
+<li>定义下标操作用于通过下标语法访问它们的值</li>
+<li>定义构造器（<code>init</code>）用于设置初始值</li>
+<li>支持扩展（<code>extension</code>）以增加默认实现之外的功能</li>
+<li>遵循协议（<code>protocol</code>）以提供某种标准功能</li>
+</ul>
+]]></summary>
+        <content type="html"><![CDATA[<h1 id="init-构造函数在struct与class中的区别">init 构造函数在struct与class中的区别</h1>
+<h3 id="1-swift中的struct与class的异同">1. swift中的struct与class的异同</h3>
+<h4 id="11-struct与class相同点">1.1 struct与class相同点</h4>
+<ul>
+<li>定义属性用于存储值</li>
+<li>定义方法用于提供功能</li>
+<li>定义下标操作用于通过下标语法访问它们的值</li>
+<li>定义构造器（<code>init</code>）用于设置初始值</li>
+<li>支持扩展（<code>extension</code>）以增加默认实现之外的功能</li>
+<li>遵循协议（<code>protocol</code>）以提供某种标准功能</li>
+</ul>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Swift关键字 designated、convenience、required]]></title>
         <id>https://platojobs.github.io/post/swift-guan-jian-zi-designatedconveniencerequired/</id>
@@ -197,23 +228,6 @@
         <content type="html"><![CDATA[<p>我的男朋友<code>不懂浪漫</code>。</p>
 <p>不会说漂亮话，不会搞些少女心的小玩意，最开心的事是拉我一起打游戏。有时候我也会抱怨：“你怎么这么直男啊？”</p>
 <p>但他有两件事很打动我。一件是我第一次工作，匆匆忙忙来到北京。第一个月，他来看了我两次，每次都提着大包小包——电热毯、感冒药、羊毛护膝。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[没办法在一起的人，只能笑着说再见]]></title>
-        <id>https://platojobs.github.io/post/mei-ban-fa-zai-yi-qi-de-ren-zhi-neng-xiao-zhao-shuo-zai-jian/</id>
-        <link href="https://platojobs.github.io/post/mei-ban-fa-zai-yi-qi-de-ren-zhi-neng-xiao-zhao-shuo-zai-jian/">
-        </link>
-        <updated>2021-09-08T01:39:28.000Z</updated>
-        <summary type="html"><![CDATA[<p>很久以前朋友跟我说过，爱不爱，合不合适，在不在一起，是三件事。</p>
-<p>以前我不信，总觉得相爱就可以在一起，无一例外。</p>
-<p>但现在好像才明白，有些感情没有办法去控制，有些人走着走着就散了，一辈子都在一起变得很难很难，快餐式的恋爱越来越大众，好的时候觉得自己仿佛得到了全世界，不好的时候又仿佛要孤独终老一辈子。</p>
-<p>我们曾经那么那么好，吃饭的时候要并排坐，左手用筷子的你，总会用右手紧紧地抓着我的左手，说怕我跑掉；下雨天路过积水多的路面，你害怕沾湿了我的鞋，小心翼翼地把我抱过去。</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>很久以前朋友跟我说过，爱不爱，合不合适，在不在一起，是三件事。</p>
-<p>以前我不信，总觉得相爱就可以在一起，无一例外。</p>
-<p>但现在好像才明白，有些感情没有办法去控制，有些人走着走着就散了，一辈子都在一起变得很难很难，快餐式的恋爱越来越大众，好的时候觉得自己仿佛得到了全世界，不好的时候又仿佛要孤独终老一辈子。</p>
-<p>我们曾经那么那么好，吃饭的时候要并排坐，左手用筷子的你，总会用右手紧紧地抓着我的左手，说怕我跑掉；下雨天路过积水多的路面，你害怕沾湿了我的鞋，小心翼翼地把我抱过去。</p>
 ]]></content>
     </entry>
 </feed>

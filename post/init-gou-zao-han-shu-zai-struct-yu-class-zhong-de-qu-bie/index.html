@@ -4,7 +4,7 @@
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<title>生活小窍门 | PlatoJobs&#39; Blog</title>
+<title>init 构造函数在struct与class中的区别 | PlatoJobs&#39; Blog</title>
 
 <link rel="shortcut icon" href="https://platojobs.github.io/favicon.ico?v=1633772326741">
 
@@ -108,29 +108,178 @@
         <div class="post-detail gt-bg-theme-color-second">
             <article class="gt-post-content">
                 <h2 class="post-title">
-                    生活小窍门
+                    init 构造函数在struct与class中的区别
                 </h2>
                 <div class="post-info">
                     <time class="post-time gt-c-content-color-first">
-                        · 2021-09-23 ·
+                        · 2021-10-09 ·
                     </time>
                     
-                        <a href="https://platojobs.github.io/tag/iczxk4-uf/" class="post-tags">
-                            # 生活
+                        <a href="https://platojobs.github.io/tag/WX6nWF5xQ/" class="post-tags">
+                            # 技术
                         </a>
                     
                 </div>
                 <div class="post-content">
-                    <p>1.不要熬夜。不健康是一方面，一过晚上十二点，人就会胡思乱想，错过和遗憾一个都不会放过你。</p>
-<p>2.保持阅读的习惯。尽可能的多读书可以帮助你建立自己的逻辑体系和判断能力。</p>
-<!-- more -->
-<p>3.不要谈凑合的恋爱。不合适的恋人并不能带你走出孤独，只会加速你的自我消耗。</p>
-<p>4.和人相处的时候要有礼貌和分寸感。只有让别人觉得相处起来舒服了，有合适的机会才会考虑推荐给你。</p>
-<p>5.多吃水果蔬菜，适度锻炼，多喝水，保持一个相对健康的身体状态。人生病了会变的格外的敏感和脆弱。</p>
-<p>6.有时间多和家里人还有朋友联系。陪伴是相互的，要有意识的付出。</p>
-<p>7.少买一些重复的无意义的东西。过量的口红和香水并不能让你的生活变的更美好，钱在关键的时刻却可以应急。</p>
-<p>8.和重要的人吵架的时候，无论多生气，都要学会克制。因为用那些最狠毒的话语伤害完对方之后，你也会伤心的。</p>
-<p>9.相信自己，给自己时间成长。</p>
+                    <h1 id="init-构造函数在struct与class中的区别">init 构造函数在struct与class中的区别</h1>
+<h3 id="1-swift中的struct与class的异同">1. swift中的struct与class的异同</h3>
+<h4 id="11-struct与class相同点">1.1 struct与class相同点</h4>
+<ul>
+<li>定义属性用于存储值</li>
+<li>定义方法用于提供功能</li>
+<li>定义下标操作用于通过下标语法访问它们的值</li>
+<li>定义构造器（<code>init</code>）用于设置初始值</li>
+<li>支持扩展（<code>extension</code>）以增加默认实现之外的功能</li>
+<li>遵循协议（<code>protocol</code>）以提供某种标准功能</li>
+</ul>
+<!--more -->
+<h4 id="12-不同之处">1.2 不同之处</h4>
+<ul>
+<li>继承允许一个类继承另一个类的特征</li>
+<li>类型转换允许在运行时检查和解释一个类实例的类型</li>
+<li>析构器允许一个类实例释放任何其所被分配的资源</li>
+<li>引用计数允许对一个类的多次引用</li>
+</ul>
+<blockquote>
+<p>以上主要是针对 <code>class</code> 来说的，<code>struct</code> 是没有这些的。</p>
+</blockquote>
+<h4 id="13-swift新增struct的目的猜测">1.3 swift新增struct的目的猜测</h4>
+<blockquote>
+<p><code>Swift</code> 之所有增加了 <code>struct</code>，主要有以下几点考虑：</p>
+</blockquote>
+<p><strong>安全性</strong>：值拷贝传递，没有引用计数；<br>
+<strong>内存</strong>：没有引用也就不会因为循环引用导致内存泄漏；<br>
+<strong>速度</strong>：值类型是直接在栈上分配，而不是在堆上，所以比 <code>class</code> 要快很多；</p>
+<blockquote>
+<p>“<code>堆</code>”和“<code>栈</code>”并不是数据结构上的<code>Heap</code>跟<code>Stack</code>，而是程序运行中的不同内存空间；<br>
+<code>栈</code>是程序启动的时候，系统事先分配的，使用过程中，系统不干预；<br>
+<code>堆</code>是用的时候才向系统申请的，用完了需要交还，这个申请和交还的过程开销相对就比较大了；<br>
+<code>栈</code>是编译时分配空间，而堆是动态分配（运行时分配空间），所以栈的速度快；<br>
+<strong>从两方面来考虑</strong>：</p>
+<ol>
+<li><code>分配和释放</code>：堆在分配和释放时都要调用函数（MALLOC,FREE)，比如分配时会到堆空间去寻找足够大小的空间（因为多次分配释放后会造成空洞），这些都会花费一定的时间，而栈却不需要这些；</li>
+<li><code>访问时间</code>：访问堆的一个具体单元，需要两次访问内存，第一次得取得指针，第二次才是真正得数据，而栈只需访问一次；</li>
+</ol>
+</blockquote>
+<p><strong>拷贝</strong>：值类型是深拷贝，<code>class</code> 默认浅拷贝；<br>
+<strong>线程安全</strong>：自动线程安全的（无论哪个线程去访问都非常简单）；</p>
+<h4 id="14-struct和class的使用场景选择">1.4 struct和class的使用场景选择</h4>
+<ol>
+<li>不考虑应用的状态，也不存在对外的数据交互，就用 <code>struct</code>；</li>
+<li>需要在多个地方修改 / 更新数据（共享数据），就用 <code>class</code>；</li>
+<li>涉及到继承就用 <code>class</code>，没有就用 <code>struct</code>；</li>
+<li>官方建议用 <code>struct + protocol</code> 来建模继承与共享；</li>
+</ol>
+<h4 id="15-示例说明和使用">1.5 示例说明和使用</h4>
+<pre><code class="language-swift">struct MwebStruct {
+    var name: String
+    var age: Int
+}
+//MwebStruct 没有析构函数，但是我们可以用来初始化使用
+let mweb = MwebStruct(name: &quot;MWeb&quot;, age: 32)
+//通过 init 构造器来初始化
+let mwebinit = MwebStruct.init(name: &quot;MWeb&quot;, age: 12)
+
+print(&quot;mweb is = \(mweb.name), mweb age is \(mweb.age)&quot;)
+
+//逐一成员构造器
+//当我们没有显示指定至少一个init构造器时，swift会为我们添加一个默认构造器，该构造器的入参即是struct中的所有成员
+
+//但是如果参数很多的话，我们只需要传入部分参数，我们该如何实现呢
+//1.可选参数默认构造器
+
+struct OptionalParamasWebStrcut{
+    var name: String
+    var age : Int?// 初始化时可选传参，不传时为nil
+}
+let opmweb = OptionalParamasWebStrcut(name: &quot;OPPP&quot;) //可选参数默认构造器
+print(&quot;oppp===\(opmweb.age ?? 0)&quot;)
+
+//2.带默认参数的默认构造器
+
+struct DefaultParamasStruct {
+    var name : String
+    //构造器不传参数时候，默认值为18
+    var age = 18
+}
+
+let defaultMweb = DefaultParamasStruct(name: &quot;Default&quot;)
+print(&quot;default = \(defaultMweb.age)&quot;)
+
+//3.扩展构造器
+extension MwebStruct {
+    //重载一个构造器
+    //该构造器调用默认构造器
+    init(name: String) {
+        self.init(name: name, age: 16)
+    }
+}
+
+let extenMweb = MwebStruct(name: &quot;YUU&quot;)
+print(&quot;exten == \(extenMweb.age)&quot;)
+
+//class相关
+class MWebClass{
+    var name: String
+    var age: Int
+    //我们至少得显示指定一个构造器，我们要按照类似struct的逐一成员构造器那样，定义一个构造器
+    
+    //??如果只构造部分成员的构造器，则会如下报错 如下：
+//    init(name: String) {
+//        self.name = name //报错 Return from initializer without initializing all stored properties
+//    }
+    //解决方式
+    /**
+     1.将 age 设置为可默认为 nil 类型（等同于 2.1.2）；
+     2. 定义 age 时就给定默认值（等同于 2.1.3）；
+     3. 在构造器中给定默认值（如下代码所示）；
+       如下
+     */
+    init(name: String) {
+        self.name = name
+        self.age = 10
+    }
+    
+}
+
+var mwebClass = MWebClass(name: &quot;Mwebclassd&quot;)
+print(&quot;mwebclass== \(mwebClass.name), == \(mwebClass.age)&quot;)
+
+/**
+ class 要求必需显式指定一个构造器，而 struct 则是由 swift 自动添加。同样，class 也可以通过扩展（extension）来重载构造器（注：扩展类的构造器，是需要便利的，即添加关键字：convenience）：
+ */
+
+extension MWebClass {
+    convenience init(name: String , age: Int) {
+        self.init(name: name)
+        self.age = age
+    }
+}
+
+var extenMwebClass = MWebClass(name: &quot;ExtenClass&quot;, age: 100)
+
+print(&quot;exten = \(extenMwebClass.name) age = \(extenMwebClass.age)&quot;)
+
+//可失败构造器
+
+var varirable : String? = nil
+
+
+struct CanfailMwebStruct {
+    var name : String
+    init?(name: String) {
+        if name == &quot;&quot;{
+            return nil
+        }
+        self.name = name
+    }
+}
+
+let canfailM = CanfailMwebStruct(name: &quot;TT&quot;)
+print(&quot;canfail====\(String(describing: canfailM))&quot;)
+
+
+</code></pre>
 
                 </div>
             </article>
@@ -139,8 +288,8 @@
         
             <div class="next-post">
                 <div class="next gt-c-content-color-first">下一篇</div>
-                <a href="https://platojobs.github.io/post/guan-yu-hao-hao-ai-wo-hao-dai-ye-suan-shang-liao-ta-zui-na-shou-de-yi-jian-shi-qing/" class="post-title gt-a-link">
-                    关于“好好爱我”，好歹也算上了他最拿手的一件事情
+                <a href="https://platojobs.github.io/post/swift-guan-jian-zi-designatedconveniencerequired/" class="post-title gt-a-link">
+                    Swift关键字 designated、convenience、required
                 </a>
             </div>
         
