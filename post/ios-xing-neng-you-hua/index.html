@@ -4,7 +4,7 @@
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<title>四年前对爱情的幻想 | PlatoJobs&#39; Blog</title>
+<title>iOS性能优化 | PlatoJobs&#39; Blog</title>
 
 <link rel="shortcut icon" href="https://platojobs.github.io/favicon.ico?v=1635843184266">
 
@@ -108,48 +108,232 @@
         <div class="post-detail gt-bg-theme-color-second">
             <article class="gt-post-content">
                 <h2 class="post-title">
-                    四年前对爱情的幻想
+                    iOS性能优化
                 </h2>
                 <div class="post-info">
                     <time class="post-time gt-c-content-color-first">
-                        · 2021-09-24 ·
+                        · 2017-11-03 ·
                     </time>
                     
-                        <a href="https://platojobs.github.io/tag/kjD9GV7Bq/" class="post-tags">
-                            # 情感
+                        <a href="https://platojobs.github.io/tag/WX6nWF5xQ/" class="post-tags">
+                            # 技术
                         </a>
                     
                 </div>
                 <div class="post-content">
-                    <p>这是我四年前对爱情的幻想。</p>
-<p>是和未来娶的那位姑娘要过的日子，希望你和我一样都不想生活在一线二线的城市，你愿意和我在日照这样靠海空气好的地方生活。</p>
-<p>最开始的欢喜就是与你一起购置家里的一切，大件小件不断充实着我们的屋子。早晨如果被窝没有强留起得早些的话，我们就可以在家做早餐，不然就直接出门找个摊位吃豆浆油条，最好还有豆腐脑鸡蛋汤可以选择，因为这两种可以洒上香菜。吃完饭各自去上班，中午时间紧的话就不用回家吃了。</p>
+                    <h3 id="卡顿解决的主要思路">卡顿解决的主要思路</h3>
+<ul>
+<li>尽可能减少<code>CPU、GPU</code>资源消耗</li>
+<li>按照<code>60FPS</code>的刷帧率，每隔16ms就会有一次<code>VSync</code>信号</li>
+<li>尽量用轻量级的对象，比如用不到事件处理的地方，可以考虑使用<code>CALayer</code>取代<code>UIView</code></li>
+<li>不要频繁地调用UIView的相关属性，比如<code>frame、bounds、transform</code>等属性，尽量减少不必要的修改</li>
+<li>尽量提前计算好布局，在有需要时一次性调整对应的属性，不要多次修改属性</li>
+<li><code>Autolayout</code>会比直接设置<code>frame</code>消耗更多的CPU资源</li>
+<li>图片的<code>size</code>最好刚好跟<code>UIImageView</code>的<code>size</code>保持一致</li>
+<li>控制一下线程的最大并发数量</li>
+<li>尽量把耗时的操作放到子线程</li>
+<li>文本处理（尺寸计算、绘制）</li>
+<li>图片处理（解码、绘制）</li>
+<li>尽量避免短时间内大量图片的显示，尽可能将多张图片合成一张进行显示</li>
+<li><code>GPU</code>能处理的最大纹理尺寸是<code>4096x4096</code>，一旦超过这个尺寸，就会占用CPU资源进行处理，所以纹理尽量+ 不要超过这个尺寸</li>
+<li>尽量减少视图数量和层次</li>
+<li>减少透明的视图（<code>alpha&lt;1</code>），不透明的就设置<code>opaque</code>为<code>YES</code></li>
+<li>尽量避免出现离屏渲染</li>
+<li></li>
+</ul>
 <!-- more -->
-<p>如果我晚上不加班的话下班就去接你，你等着我就可以了，日照一般不会堵车，会很快的。我们去看场电影去海边走一走都好，嘴馋想吃海鲜的话就去市场买些回家吃，最好周三周末的时候你能陪我去踢两次球，你顺便去美甲美发都可以，日子有些倦了就出门旅游看一看，我手里面的单反只认识你。</p>
-<p>你的头发不用太长，内扣的长度刚刚好，平时还可以把头发绾起来，肯定也特好看。</p>
-<p>我工作忙的时候，你也会看看书什么的，偶尔兴趣来了学个什么菜让我尝一尝也行，我吃的时候你就坐旁边巴巴的等我夸你几句。<br>
-<img src="https://img2.baidu.com/it/u=3134715917,1639681578&amp;fm=26&amp;fmt=auto" alt="" loading="lazy"><br>
-我们各自最好的朋友每年都会像度假一样来日照这里住几天，每年不见上一次真的会很想念。</p>
-<p>你烦躁沉默的时候，我就拉着你手去海边去大街上走一走，运气好碰到有卖吹泡泡的玩具氢气球这些东西的小贩还可以吹泡泡给你看，我们来比一比谁碰破的泡泡最多。</p>
-<p>生活不如意的事常有，如果真的有特别烦躁的事情让你一时半会缓不过来，我们沉默着一言不发也挺好，你烦你的，我望着你，等我觉得差不多了就过去抱抱你。</p>
-<p>你千万不要一直都特别乖，不能让我太习惯你的乖巧，有时候也要为难我一下，让我好好哄哄你，不然哪天你突然发个脾气我怕我思想转换太慢，会凶你几句，这样我会恨死我自己的。</p>
-<p>我自己也会有难过的时候，你让我一个人呆会就好，等我自己矫情完，这事差不多也就翻篇了。晚上睡觉的时候或者第二天早晨边吃着东西边笑着说是为了什么而难过。</p>
-<p>我不想你心里有那种忘不了的人，因为我特别明白自己敌不过，我这人太敏感了，会一直和自己较劲的，所以宁肯离开。爱情里当然要问值不值得，我愿意用心对待，也希望你值得并且需要我用心。</p>
-<p>求婚和婚礼两个场景你也要特别重视，我这些年不断在备忘录里更新着想法，希望能和你的想法加在一起。就像现在，我所写下的也只单单是我的想法，和你所想的能够融合也是必须的。</p>
-<p>希望我们能一直有想要彼此靠近彼此温暖的心，最棒的人生体验就是能把一个人爱的完全，“爱不是法庭，一言一行都被记下好用来定罪，爱是善意疏忽”。​</p>
-<p>你是前世从我手心里飞出的蝴蝶，愿我们能一起重新认识这个世界。</p>
+<h3 id="离屏渲染">离屏渲染</h3>
+<p>在<code>OpenGL</code>中，<code>GPU</code>有2种<strong>渲染方式</strong>：</p>
+<ul>
+<li><code>On-Screen Rendering</code>：当前屏幕渲染，在当前用于显示的屏幕缓冲区进行渲染操作</li>
+<li><code>Off-Screen Rendering</code>：离屏渲染，在当前屏幕缓冲区以外新开辟一个缓冲区进行渲染操作<br>
+离屏渲染消耗性能的原因</li>
+</ul>
+<p>需要创建新的缓冲区<br>
+离屏渲染的整个过程，需要多次切换上下文环境，先是从当前屏幕（<code>On-Screen</code>）切换到离屏<code>（Off-Screen）</code>；等到离屏渲染结束以后，将离屏缓冲区的渲染结果显示到屏幕上，又需要将上下文环境从离屏切换到当前屏幕</p>
+<h3 id="哪些操作会触发离屏渲染">哪些操作会触发离屏渲染？</h3>
+<ul>
+<li>光栅化，<code>layer.shouldRasterize = YES</code></li>
+<li>遮罩，<code>layer.mask</code></li>
+<li>圆角，同时设置<code>layer.masksToBounds = YES</code>、<code>layer.cornerRadius</code>大于0</li>
+<li>考虑通过<code>CoreGraphics</code>绘制裁剪圆角，或者叫美工提供圆角图片</li>
+<li>阴影，<code>layer.shadowXXX</code></li>
+<li>如果设置了<code>layer.shadowPath</code>就不会产生离屏渲染</li>
+</ul>
+<h4 id="卡顿检测">卡顿检测</h4>
+<p>平时所说的“卡顿”主要是因为在主线程执行了比较耗时的操作<br>
+可以添加<code>Observer</code>到主线程<code>RunLoop</code>中，通过监听<code>RunLoop</code>状态切换的耗时，以达到监控卡顿的目的<br>
+耗电的主要来源</p>
+<ul>
+<li>
+<p>CPU处理，<code>Processing</code></p>
+</li>
+<li>
+<p>网络，<code>Networking</code></p>
+</li>
+<li>
+<p>定位，<code>Location</code></p>
+</li>
+<li>
+<p>图像，<code>Graphics</code></p>
+</li>
+<li>
+<p>耗电优化</p>
+</li>
+<li>
+<p>尽可能降低<code>CPU、GPU</code>功耗</p>
+</li>
+<li>
+<p>少用定时器</p>
+</li>
+<li>
+<p>优化<code>I/O</code>操作</p>
+</li>
+<li>
+<p>尽量不要频繁写入小数据，最好批量一次性写入</p>
+</li>
+<li>
+<p>读写大量重要数据时，考虑用<code>dispatch_io</code>，其提供了基于<code>GCD</code>的异步操作文件<code>I/O</code>的<code>API</code>。用<code>dispatch_io</code>系统会优化磁盘访问</p>
+</li>
+<li>
+<p>数据量比较大的，建议使用数据库（比如<code>SQLite、CoreData</code>）</p>
+</li>
+</ul>
+<h4 id="网络优化">网络优化</h4>
+<ul>
+<li>
+<p>减少、压缩网络数据</p>
+</li>
+<li>
+<p>如果多次请求的结果是相同的，尽量使用缓存</p>
+</li>
+<li>
+<p>使用断点续传，否则网络不稳定时可能多次传输相同的内容</p>
+</li>
+<li>
+<p>网络不可用时，不要尝试执行网络请求</p>
+</li>
+<li>
+<p>让用户可以取消长时间运行或者速度很慢的网络操作，设置合适的超时时间</p>
+</li>
+<li>
+<p>批量传输，比如，下载视频流时，不要传输很小的数据包，直接下载整个文件或者一大块一大块地下载。+ 如果下载广告，一次性多下载一些，然后再慢慢展示。如果下载电子邮件，一次下载多封，不要一封一封地下载</p>
+</li>
+</ul>
+<h4 id="定位优化">定位优化</h4>
+<ul>
+<li>如果只是需要快速确定用户位置，最好用<code>CLLocationManager</code>的<code>requestLocation</code>方法。定位完成后，会自动让定位硬件断电</li>
+<li>如果不是导航应用，尽量不要实时更新位置，定位完毕就关掉定位服务</li>
+<li>尽量降低定位精度，比如尽量不要使用精度最高的<code>kCLLocationAccuracyBest</code></li>
+<li>需要后台定位时，尽量设置<code>pausesLocationUpdatesAutomatically</code>为YES，如果用户不太可能移动的时候系统会自动暂停位置更新</li>
+<li>尽量不要使用<code>startMonitoringSignificantLocationChanges</code>，优先考虑<code>startMonitoringForRegion:</code></li>
+</ul>
+<h4 id="硬件检测优化">硬件检测优化</h4>
+<blockquote>
+<p>用户移动、摇晃、倾斜设备时，会产生动作(<code>motion</code>)事件，这些事件由加速度计、陀螺仪、磁力计等硬件检测。在不需要检测的场合，应该及时关闭这些硬件</p>
+</blockquote>
+<h3 id="app的启动">APP的启动</h3>
+<p><code>APP</code>的启动可以分为2种</p>
+<ul>
+<li>冷启动（<code>Cold Launch</code>）：从零开始启动<code>APP</code></li>
+<li>热启动（<code>Warm Launch</code>）：<code>APP</code>已经在内存中，在后台存活着，再次点击图标启动APP<br>
+<strong>APP启动时间的优化，主要是针对冷启动进行优化</strong><br>
+通过添加环境变量可以打印出APP的启动时间分析（<code>Edit scheme -&gt; Run -&gt; Arguments</code>）<br>
+<code>DYLD_PRINT_STATISTICS</code>设置为<code>1</code><br>
+如果需要更详细的信息，那就将<code>DYLD_PRINT_STATISTICS_DETAILS</code>设置为<code>1</code></li>
+</ul>
+<p><code>APP</code>的冷启动可以概括为3大阶段</p>
+<ul>
+<li>
+<p><code>dyld</code></p>
+</li>
+<li>
+<p><code>runtime</code></p>
+</li>
+<li>
+<p><code>main</code></p>
+<h4 id="app的启动-dyld">APP的启动 - dyld</h4>
+</li>
+</ul>
+<p><code>dyld（dynamic link editor）</code>，<code>Apple</code>的动态链接器，可以用来装载<code>Mach-O</code>文件（可执行文件、动态库等）</p>
+<ul>
+<li>
+<p>启动APP时，<code>dyld</code>所做的事情有</p>
+</li>
+<li>
+<p>装载APP的可执行文件，同时会递归加载所有依赖的动态库</p>
+</li>
+<li>
+<p>当<code>dyld</code>把可执行文件、动态库都装载完毕后，会通知<code>Runtime</code>进行下一步的处理</p>
+</li>
+</ul>
+<h4 id="app的启动-runtime">APP的启动 - runtime</h4>
+<ul>
+<li>
+<p>启动<code>APP</code>时，<code>runtime</code>所做的事情有</p>
+</li>
+<li>
+<p>调用<code>map_images</code>进行可执行文件内容的解析和处理</p>
+</li>
+<li>
+<p>在<code>load_images</code>中调用<code>call_load_methods</code>，调用所有<code>Class</code>和<code>Category</code>的<code>+load</code>方法</p>
+</li>
+<li>
+<p>进行各种<code>objc</code>结构的初始化（注册<code>Objc</code>类 、初始化类对象等等）</p>
+</li>
+<li>
+<p>调用<code>C++</code>静态初始化器和<code>attribute((constructor))</code>修饰的函数</p>
+</li>
+<li>
+<p>到此为止，可执行文件和动态库中所有的符号(<code>Class，Protocol，Selector，IMP，…</code>)都已经按格式成功加载到内存中，被<code>runtime</code> 所管理</p>
+</li>
+</ul>
+<h4 id="总结一下">总结一下</h4>
+<p><code>APP</code>的启动由<code>dyld</code>主导，将可执行文件加载到内存，顺便加载所有依赖的动态库</p>
+<p>并由<code>runtime</code>负责加载成<code>objc</code>定义的结构</p>
+<p>所有初始化工作结束后，<code>dyld</code>就会调用<code>main</code>函数</p>
+<p>接下来就是<code>UIApplicationMain</code>函数，<code>AppDelegate</code>的<code>application:didFinishLaunchingWithOptions:</code>方法</p>
+<h4 id="app的启动优化">APP的启动优化</h4>
+<ul>
+<li>
+<p>按照不同的阶段</p>
+</li>
+<li>
+<p><code>dyld</code></p>
+</li>
+<li>
+<p>减少动态库、合并一些动态库（定期清理不必要的动态库）</p>
+</li>
+<li>
+<p>减少<code>Objc</code>类、分类的数量、减少<code>Selector</code>数量（定期清理不必要的类、分类）</p>
+</li>
+<li>
+<p>减少<code>C++</code>虚函数数量</p>
+</li>
+</ul>
+<p><code>Swift</code>尽量使用<code>struct</code></p>
+<ul>
+<li>
+<p><code>runtime</code></p>
+</li>
+<li>
+<p>用<code>+initialize</code>方法和<code>dispatch_once</code>取代所有的<code>attribute((constructor))</code>、<code>C++</code>静态构造器、<code>ObjC</code>的<code>+load</code></p>
+</li>
+<li>
+<p><code>main</code></p>
+</li>
+<li>
+<p>在不影响用户体验的前提下，尽可能将一些操作延迟，不要全部都放在<code>finishLaunching</code>方法中</p>
+</li>
+<li>
+<p>按需加载</p>
+</li>
+</ul>
 
                 </div>
             </article>
         </div>
 
-        
-            <div class="next-post">
-                <div class="next gt-c-content-color-first">下一篇</div>
-                <a href="https://platojobs.github.io/post/zhi-chang-shi-xi-gong-lue/" class="post-title gt-a-link">
-                    职场实习攻略
-                </a>
-            </div>
         
 
         
