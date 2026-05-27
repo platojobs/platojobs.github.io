@@ -41,7 +41,7 @@
     <link rel="icon" type="image/svg+xml" href="./logo.svg" />
     <link rel="manifest" href="./site.webmanifest" />
     <link rel="alternate" type="application/rss+xml" title="PlatoJobs RSS" href="./feed.xml" />
-    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./styles.css?v=20260527-i18n1" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -77,23 +77,27 @@
             <span class="brand-caret" aria-hidden="true"></span>
           </span>
         </a>
+        <div class="language-toggle" role="group" aria-label="Language switcher">
+          <a id="lang-zh" class="lang-button is-active" href="./?lang=zh">中文</a>
+          <a id="lang-en" class="lang-button" href="./?lang=en">EN</a>
+        </div>
         <p class="brand-copy">
           Days without expectations go smoothly.
         </p>
 
         <div class="rail-card">
-          <p class="rail-label">Overview</p>
+          <p class="rail-label" data-i18n="overview">Overview</p>
           <dl class="stats">
             <div>
-              <dt>Posts</dt>
+              <dt data-i18n="posts">Posts</dt>
               <dd id="total-posts">--</dd>
             </div>
             <div>
-              <dt>Labels</dt>
+              <dt data-i18n="labels">Labels</dt>
               <dd id="label-count">--</dd>
             </div>
             <div>
-              <dt>Latest</dt>
+              <dt data-i18n="latest">Latest</dt>
               <dd id="latest-date">--</dd>
             </div>
           </dl>
@@ -101,13 +105,13 @@
 
         <div class="rail-card">
           <label class="search-block">
-            <span class="rail-label">Search</span>
-            <input id="search-input" type="search" placeholder="搜索标题、摘要、标签" />
+            <span class="rail-label" data-i18n="search">Search</span>
+            <input id="search-input" type="search" data-i18n-placeholder="search_placeholder" placeholder="搜索标题、摘要、标签" />
           </label>
         </div>
 
         <div class="rail-card">
-          <p class="rail-label">Labels</p>
+          <p class="rail-label" data-i18n="labels">Labels</p>
           <div id="label-filters" class="label-filters is-collapsed-mobile"></div>
           <button
             id="labels-toggle"
@@ -120,7 +124,7 @@
         </div>
 
         <div class="rail-card">
-          <p class="rail-label">Social</p>
+          <p class="rail-label" data-i18n="social">Social</p>
           <div class="social-links">
             <a class="social-link" href="https://github.com/platojobs" target="_blank" rel="noreferrer">
               <span class="icon-badge" aria-hidden="true">
@@ -134,20 +138,20 @@
                 <svg viewBox="0 0 24 24" class="ui-icon"><path d="M8 2h8"/><path d="M9 2v2.5"/><path d="M15 2v2.5"/><rect x="4" y="4.5" width="16" height="17" rx="3"/><path d="M8 10h8"/><path d="M8 14h5"/></svg>
               </span>
               <span class="social-name">Issues</span>
-              <span class="social-handle">Write in public</span>
+              <span class="social-handle" data-i18n="write_in_public">Write in public</span>
             </a>
             <a class="social-link" href="https://www.platojobs.com/" target="_blank" rel="noreferrer">
               <span class="icon-badge" aria-hidden="true">
                 <svg viewBox="0 0 24 24" class="ui-icon"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a15.3 15.3 0 0 1 4 9 15.3 15.3 0 0 1-4 9 15.3 15.3 0 0 1-4-9 15.3 15.3 0 0 1 4-9Z"/></svg>
               </span>
               <span class="social-name">Pages</span>
-              <span class="social-handle">Live reading space</span>
+              <span class="social-handle" data-i18n="live_reading_space">Live reading space</span>
             </a>
           </div>
         </div>
 
         <div class="rail-card">
-          <p class="rail-label">Friends</p>
+          <p class="rail-label" data-i18n="friends">Friends</p>
           <div id="friend-links" class="friend-links is-collapsed-mobile">
             <a class="friend-link" href="https://github.com/carbon-language/carbon-lang" target="_blank" rel="noreferrer">
               <span class="icon-badge" aria-hidden="true">
@@ -199,14 +203,15 @@
       <main class="timeline-column">
         <header class="timeline-header">
           <div>
-            <p class="eyebrow">Issue Journal</p>
-            <h1>Article Abstract Flow</h1>
+            <p class="eyebrow" data-i18n="issue_journal">Issue Journal</p>
+            <h1 data-i18n="article_abstract_flow">Article Abstract Flow</h1>
           </div>
           <a
             class="compose-link"
             href="https://github.com/platojobs/SFLOG/issues/new"
             target="_blank"
             rel="noreferrer"
+            data-i18n="write_new_post"
           >
             写新文章
           </a>
@@ -215,7 +220,7 @@
         <div class="timeline-toolbar">
           <p id="result-count" class="result-count">加载中...</p>
           <div class="page-size">
-            <label for="page-size-select">每页</label>
+            <label for="page-size-select" data-i18n="per_page">每页</label>
             <select id="page-size-select">
               <option value="5">5</option>
               <option value="8" selected>8</option>
@@ -227,9 +232,9 @@
         <section id="post-list" class="post-list" aria-live="polite"></section>
 
         <nav class="pagination" aria-label="Pagination">
-          <button id="prev-page" class="pager-button" type="button">上一页</button>
+          <button id="prev-page" class="pager-button" type="button" data-i18n="prev_page">上一页</button>
           <span id="page-indicator" class="page-indicator">-- / --</span>
-          <button id="next-page" class="pager-button" type="button">下一页</button>
+          <button id="next-page" class="pager-button" type="button" data-i18n="next_page">下一页</button>
         </nav>
 
         <nav id="seo-post-links" class="seo-post-links" aria-label="Article links"></nav>
@@ -242,25 +247,25 @@
       <div class="modal-shell">
         <div class="drawer-topbar">
           <div>
-            <p class="eyebrow">Reading View</p>
-            <h2 class="modal-title">专注模式</h2>
+            <p class="eyebrow" data-i18n="reading_view">Reading View</p>
+            <h2 class="modal-title" data-i18n="focus_mode">专注模式</h2>
           </div>
-          <button id="drawer-close" class="drawer-close" type="button" aria-label="关闭阅读面板">Close</button>
+          <button id="drawer-close" class="drawer-close" type="button" aria-label="关闭阅读面板" data-i18n="close">Close</button>
         </div>
 
         <div class="reader-card">
           <div id="reader-shell" class="reader-shell">
             <div class="reader-empty">
-              <p class="eyebrow">Reader</p>
-              <h2>选择一篇文章开始阅读。</h2>
-              <p>列表只显示摘要，点击后在这里展开完整内容。</p>
+              <p class="eyebrow" data-i18n="reader">Reader</p>
+              <h2 data-i18n="reader_empty_title">选择一篇文章开始阅读。</h2>
+              <p data-i18n="reader_empty_body">列表只显示摘要，点击后在这里展开完整内容。</p>
             </div>
           </div>
         </div>
 
         <div class="comments-card">
-          <p class="eyebrow">Comments</p>
-          <h3>Issue Comments</h3>
+          <p class="eyebrow" data-i18n="comments">Comments</p>
+          <h3 data-i18n="issue_comments">Issue Comments</h3>
           <p id="comments-status">
             这里会承接当前文章对应 GitHub issue 的评论线程。
           </p>
@@ -270,6 +275,6 @@
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="./script.js"></script>
+    <script src="./script.js?v=20260527-i18n1"></script>
   </body>
 </html>

@@ -5,6 +5,7 @@ import path from "node:path";
 
 const IGNORED_LABELS = new Set(["TODO", "Friends"]);
 const SITE_URL = "https://www.platojobs.com";
+const DEFAULT_AUTHORS = ["platojobs", "flutterffi"];
 
 function parseArgs(argv) {
   const args = {};
@@ -17,6 +18,14 @@ function parseArgs(argv) {
     }
   }
   return args;
+}
+
+function parseAllowedAuthors(value) {
+  if (!value) return DEFAULT_AUTHORS;
+  return String(value)
+    .split(",")
+    .map((item) => item.trim().toLowerCase())
+    .filter(Boolean);
 }
 
 function slugify(value) {
@@ -142,6 +151,7 @@ async function main() {
   const outDir = path.resolve(args.out || ".");
   const sourceDir = path.resolve(args.source || "../SFLOG");
   const metaPath = path.resolve(args.meta || "./sflog-issues.jsonl");
+  const allowedAuthors = new Set(parseAllowedAuthors(args.authors || args.author));
   const backupDir = path.join(sourceDir, "BACKUP");
   const contentDir = path.join(outDir, "blog-content");
   const dataDir = path.join(outDir, "blog-data");
@@ -166,6 +176,8 @@ async function main() {
     if (seenNumbers.has(issueNumber)) continue;
     const issueMeta = metaMap.get(issueNumber);
     if (!issueMeta) continue;
+    const issueAuthor = String(issueMeta.user_login || issueMeta.author || "").toLowerCase();
+    if (issueAuthor && !allowedAuthors.has(issueAuthor)) continue;
 
     const filePath = path.join(backupDir, file);
     let markdown = await fs.readFile(filePath, "utf8");

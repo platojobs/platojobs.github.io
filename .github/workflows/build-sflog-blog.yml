@@ -47,11 +47,11 @@ jobs:
           fi
           GH_TOKEN="$TOKEN" gh api 'repos/platojobs/SFLOG/issues?state=all&per_page=100' \
             --paginate \
-            --jq '.[] | {number, title, created_at, updated_at, html_url, labels: [.labels[].name]}' \
+            --jq '.[] | {number, title, created_at, updated_at, html_url, user_login: .user.login, labels: [.labels[].name]}' \
             > sflog-issues.jsonl
 
       - name: Build static blog data
-        run: node scripts/build-sflog-blog.mjs --source ../SFLOG --meta ./sflog-issues.jsonl --out .
+        run: node scripts/build-sflog-blog.mjs --source ../SFLOG --meta ./sflog-issues.jsonl --authors platojobs,flutterffi --out .
 
       - name: Remove temporary metadata file
         run: rm -f sflog-issues.jsonl
