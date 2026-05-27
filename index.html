@@ -47,14 +47,14 @@
       href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Source+Serif+4:opsz,wght@8..60,500;8..60,700&display=swap"
       rel="stylesheet"
     />
-    <link rel="icon" type="image/svg+xml" href="./logo.svg?v=20260527-archive3" />
+    <link rel="icon" type="image/svg+xml" href="./logo.svg?v=20260527-archive14" />
     <link rel="manifest" href="./site.webmanifest" />
     <link rel="alternate" type="application/rss+xml" title="PlatoJobs RSS" href="./feed.xml" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github-dark-dimmed.min.css"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260527-archive3" />
+    <link rel="stylesheet" href="./styles.css?v=20260527-archive14" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -95,20 +95,29 @@
             <span class="brand-caret" aria-hidden="true"></span>
           </span>
         </a>
+        <p class="brand-copy" data-i18n="brand_copy">
+          Days without expectations go smoothly.
+        </p>
         <div class="language-toggle" role="group" aria-label="Language switcher">
           <a id="lang-zh" class="lang-button is-active" href="./?lang=zh">中文</a>
           <a id="lang-en" class="lang-button" href="./?lang=en">EN</a>
         </div>
-        <p class="brand-copy">
-          Days without expectations go smoothly.
-        </p>
 
         <div class="rail-card">
           <p class="rail-label" data-i18n="explore">Explore</p>
           <div class="section-nav">
-            <a id="nav-home" class="section-nav-link is-active" href="./?lang=zh" data-view="home" data-i18n="home">首页</a>
-            <a id="nav-archive" class="section-nav-link" href="./?lang=zh&view=archive" data-view="archive" data-i18n="archive">归档</a>
-            <a id="nav-about" class="section-nav-link" href="./?lang=zh&view=about" data-view="about" data-i18n="about">关于我</a>
+            <a id="nav-home" class="section-nav-link is-active" href="./?lang=zh" data-view="home" aria-label="Home">
+              <svg viewBox="0 0 24 24" class="ui-icon ui-icon--nav" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5"/><path d="M7.5 10v9h9v-9"/><path d="M10.5 19v-5h3v5"/></svg>
+              <span class="sr-only" data-i18n="home">首页</span>
+            </a>
+            <a id="nav-archive" class="section-nav-link" href="./?lang=zh&view=archive" data-view="archive" aria-label="Archive">
+              <svg viewBox="0 0 24 24" class="ui-icon ui-icon--nav" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2.5"/><path d="M8 3.5v4"/><path d="M16 3.5v4"/><path d="M4 9.5h16"/><path d="M8 13h3"/><path d="M13 13h3"/><path d="M8 16.5h3"/></svg>
+              <span class="sr-only" data-i18n="archive">归档</span>
+            </a>
+            <a id="nav-about" class="section-nav-link" href="./?lang=zh&view=about" data-view="about" aria-label="About">
+              <svg viewBox="0 0 24 24" class="ui-icon ui-icon--nav" aria-hidden="true"><circle cx="12" cy="8" r="3.25"/><path d="M6.5 19.5c1.45-2.65 3.3-4 5.5-4s4.05 1.35 5.5 4"/></svg>
+              <span class="sr-only" data-i18n="about">关于我</span>
+            </a>
           </div>
         </div>
 
@@ -416,8 +425,24 @@
       </div>
     </section>
 
+    <div id="floating-lang" class="floating-lang" hidden>
+      <button
+        id="floating-lang-toggle"
+        class="floating-lang-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-label="Toggle language switcher"
+      >
+        <span class="floating-lang-label">中 / EN</span>
+      </button>
+      <div id="floating-lang-menu" class="floating-lang-menu" hidden>
+        <button id="floating-lang-zh" class="floating-lang-option" type="button">中文</button>
+        <button id="floating-lang-en" class="floating-lang-option" type="button">EN</button>
+      </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
-    <script src="./script.js?v=20260527-archive3"></script>
+    <script src="./script.js?v=20260527-archive14"></script>
   </body>
 </html>

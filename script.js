@@ -19,6 +19,11 @@ const elements = {
   latestDate: document.querySelector("#latest-date"),
   langZh: document.querySelector("#lang-zh"),
   langEn: document.querySelector("#lang-en"),
+  floatingLang: document.querySelector("#floating-lang"),
+  floatingLangToggle: document.querySelector("#floating-lang-toggle"),
+  floatingLangMenu: document.querySelector("#floating-lang-menu"),
+  floatingLangZh: document.querySelector("#floating-lang-zh"),
+  floatingLangEn: document.querySelector("#floating-lang-en"),
   navHome: document.querySelector("#nav-home"),
   navArchive: document.querySelector("#nav-archive"),
   navAbout: document.querySelector("#nav-about"),
@@ -76,6 +81,7 @@ const TRANSLATIONS = {
   zh: {
     locale: "zh-CN",
     site_description: "PlatoJobs 的个人网站，聚合技术写作、阅读笔记、思考记录与生活片段。",
+    brand_copy: "无所期待的日子，反而更顺利。",
     explore: "探索",
     home: "首页",
     archive: "归档",
@@ -158,6 +164,7 @@ const TRANSLATIONS = {
   en: {
     locale: "en-US",
     site_description: "PlatoJobs personal website for technical writing, reading notes, reflections, and life fragments.",
+    brand_copy: "Days without expectations go smoothly.",
     explore: "Explore",
     home: "Home",
     archive: "Archive",
@@ -773,6 +780,25 @@ function renderStaticI18n() {
 function renderLanguageToggle() {
   elements.langZh?.classList.toggle("is-active", state.locale === "zh");
   elements.langEn?.classList.toggle("is-active", state.locale === "en");
+  elements.floatingLangZh?.classList.toggle("is-active", state.locale === "zh");
+  elements.floatingLangEn?.classList.toggle("is-active", state.locale === "en");
+}
+
+function setFloatingLanguageMenu(open) {
+  if (!elements.floatingLangMenu || !elements.floatingLangToggle || !elements.floatingLang) return;
+  elements.floatingLangMenu.hidden = !open;
+  elements.floatingLangToggle.setAttribute("aria-expanded", String(open));
+  elements.floatingLang.classList.toggle("is-open", open);
+}
+
+function syncFloatingLanguageVisibility() {
+  const shouldFloat = window.matchMedia("(max-width: 1180px)").matches;
+  if (elements.floatingLang) {
+    elements.floatingLang.hidden = !shouldFloat;
+  }
+  if (!shouldFloat) {
+    setFloatingLanguageMenu(false);
+  }
 }
 
 function renderSectionNav() {
@@ -1266,6 +1292,21 @@ async function openPost(slug) {
 }
 
 function bindControls() {
+  elements.floatingLangToggle?.addEventListener("click", () => {
+    const expanded = elements.floatingLangToggle.getAttribute("aria-expanded") === "true";
+    setFloatingLanguageMenu(!expanded);
+  });
+
+  elements.floatingLangZh?.addEventListener("click", () => {
+    setFloatingLanguageMenu(false);
+    void setLocale("zh");
+  });
+
+  elements.floatingLangEn?.addEventListener("click", () => {
+    setFloatingLanguageMenu(false);
+    void setLocale("en");
+  });
+
   elements.navHome?.addEventListener("click", (event) => {
     event.preventDefault();
     state.activeView = "home";
@@ -1364,8 +1405,15 @@ function bindControls() {
   });
   window.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
+      setFloatingLanguageMenu(false);
       closeDrawer();
     }
+  });
+  window.addEventListener("resize", syncFloatingLanguageVisibility, { passive: true });
+  document.addEventListener("click", (event) => {
+    if (!elements.floatingLang || elements.floatingLang.hidden) return;
+    if (elements.floatingLang.contains(event.target)) return;
+    setFloatingLanguageMenu(false);
   });
 }
 
@@ -1376,6 +1424,7 @@ async function setLocale(locale) {
   updateQueryState({ slug: state.activeSlug, locale, view: state.activeView });
   renderStaticI18n();
   renderLanguageToggle();
+  syncFloatingLanguageVisibility();
   renderSectionNav();
   renderExpandToggles();
   updateLocaleLinks();
@@ -1416,6 +1465,7 @@ async function boot() {
   startBrandTyping();
   renderStaticI18n();
   renderLanguageToggle();
+  syncFloatingLanguageVisibility();
   renderSectionNav();
   renderExpandToggles();
   elements.resultCount.textContent = t("loading_posts");
