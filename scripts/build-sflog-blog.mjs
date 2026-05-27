@@ -4,7 +4,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 
 const IGNORED_LABELS = new Set(["TODO", "Friends"]);
-const SITE_URL = "https://platojobs.github.io";
+const SITE_URL = "https://www.platojobs.com";
 
 function parseArgs(argv) {
   const args = {};

@@ -42,7 +42,7 @@ const BRAND_WORDS = ["Hello World"];
 const SITE_NAME = "PlatoJobs";
 const SITE_TITLE = "Hello World | PlatoJobs";
 const SITE_DESCRIPTION = "PlatoJobs 的个人博客，基于 GitHub Issues 写作与沉淀，聚合阅读、思考、技术笔记与生活片段。";
-const SITE_URL = "https://platojobs.github.io/";
+const SITE_URL = "https://www.platojobs.com/";
 const COMMENTS_REPO = "platojobs/SFLOG";
 
 function formatDate(dateString) {

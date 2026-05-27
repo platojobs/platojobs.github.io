@@ -27,6 +27,7 @@ body {
     var(--bg);
   color: var(--ink);
   font-family: "IBM Plex Sans", sans-serif;
+  overflow-x: clip;
 }
 
 a {
@@ -470,6 +471,7 @@ body.modal-open .timeline-column {
   margin: 10px 0 8px;
   font-size: 1.2rem;
   line-height: 1.2;
+  overflow-wrap: anywhere;
 }
 
 .post-summary {
@@ -478,6 +480,7 @@ body.modal-open .timeline-column {
   overflow: hidden;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
+  overflow-wrap: anywhere;
 }
 
 .post-meta {
@@ -867,6 +870,16 @@ body.modal-open .timeline-column {
   .app-shell {
     width: min(100% - 10px, 1580px);
     grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .left-rail {
+    position: static;
+    order: 2;
+  }
+
+  .timeline-column {
+    order: 1;
   }
 
   .timeline-header,
@@ -874,6 +887,70 @@ body.modal-open .timeline-column {
   .article-hero {
     flex-direction: column;
     align-items: start;
+  }
+
+  .timeline-header,
+  .timeline-toolbar {
+    gap: 14px;
+  }
+
+  .timeline-header > div,
+  .compose-link {
+    width: 100%;
+  }
+
+  .compose-link {
+    min-height: 46px;
+  }
+
+  .timeline-toolbar,
+  .pagination {
+    align-items: stretch;
+    flex-wrap: wrap;
+  }
+
+  .page-size {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .page-size select {
+    min-width: 88px;
+  }
+
+  .post-list {
+    gap: 12px;
+  }
+
+  .post-card {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .post-footer {
+    flex-direction: column;
+    align-items: start;
+  }
+
+  .post-tags {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 2px;
+    flex-wrap: nowrap;
+  }
+
+  .pagination {
+    gap: 10px;
+  }
+
+  .pager-button {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .page-indicator {
+    width: 100%;
+    text-align: center;
   }
 
   .article-hero {
@@ -916,8 +993,12 @@ body.modal-open .timeline-column {
 
 @media (max-width: 620px) {
   .app-shell {
-    width: calc(100% - 6px);
-    padding-top: 10px;
+    width: calc(100% - 8px);
+    padding-top: 8px;
+    gap: 10px;
+  }
+
+  .left-rail {
     gap: 10px;
   }
 
@@ -930,7 +1011,32 @@ body.modal-open .timeline-column {
   }
 
   .timeline-header {
-    padding: 16px;
+    padding: 14px;
+  }
+
+  .timeline-header h1 {
+    font-size: clamp(1.6rem, 8vw, 2.15rem);
+    line-height: 1.02;
+  }
+
+  .timeline-toolbar {
+    padding: 0 2px;
+  }
+
+  .result-count {
+    font-size: 0.95rem;
+  }
+
+  .label-filters {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 2px;
+    scrollbar-width: none;
+  }
+
+  .label-filters::-webkit-scrollbar,
+  .post-tags::-webkit-scrollbar {
+    display: none;
   }
 
   .brand-terminal {
@@ -952,11 +1058,28 @@ body.modal-open .timeline-column {
   }
 
   .brand-copy {
-    font-size: 1.16rem;
+    font-size: 1.04rem;
+    margin-bottom: 12px;
   }
 
   .post-card {
     padding: 16px;
+  }
+
+  .post-card h3 {
+    font-size: 1.22rem;
+    line-height: 1.18;
+  }
+
+  .post-summary {
+    font-size: 0.98rem;
+    line-height: 1.65;
+    -webkit-line-clamp: 4;
+  }
+
+  .post-meta {
+    gap: 6px 12px;
+    font-size: 0.92rem;
   }
 
   .drawer-topbar {
@@ -965,6 +1088,77 @@ body.modal-open .timeline-column {
 
   .modal-shell {
     padding: 12px;
+  }
+
+  .friend-links {
+    gap: 8px;
+  }
+
+  .friend-link:nth-child(n + 4) {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-shell {
+    width: calc(100% - 4px);
+    padding-top: 6px;
+    gap: 8px;
+  }
+
+  .timeline-header,
+  .rail-card,
+  .post-card,
+  .reader-card,
+  .comments-card {
+    border-radius: 16px;
+  }
+
+  .timeline-header {
+    padding: 12px;
+  }
+
+  .timeline-header h1 {
+    font-size: 1.46rem;
+  }
+
+  .brand-shell {
+    grid-template-columns: 46px minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .brand-mark {
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+  }
+
+  .brand-terminal {
+    min-height: 46px;
+    padding: 0 12px;
+  }
+
+  .brand {
+    font-size: 1rem;
+  }
+
+  .brand-copy {
+    font-size: 0.96rem;
+  }
+
+  .post-card {
+    padding: 14px;
+  }
+
+  .post-card h3 {
+    font-size: 1.08rem;
+  }
+
+  .compose-link,
+  .pager-button,
+  .search-block input,
+  .page-size select {
+    min-height: 42px;
   }
 }
 
