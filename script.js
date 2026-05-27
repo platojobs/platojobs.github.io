@@ -44,6 +44,7 @@ const elements = {
   ogType: document.querySelector("#og-type"),
   twitterTitle: document.querySelector("#twitter-title"),
   twitterDescription: document.querySelector("#twitter-description"),
+  articleJsonLd: document.querySelector("#article-jsonld"),
   pageIndicator: document.querySelector("#page-indicator"),
   prevPage: document.querySelector("#prev-page"),
   nextPage: document.querySelector("#next-page"),
@@ -302,6 +303,49 @@ function setMetaContent(element, value) {
   }
 }
 
+function getArticleKeywords(post) {
+  const keywords = new Set(post.labels.filter((label) => label !== "Top"));
+  keywords.add(getCategory(post));
+  return Array.from(keywords).filter(Boolean);
+}
+
+function updateArticleJsonLd(post) {
+  if (!elements.articleJsonLd) return;
+
+  if (!post) {
+    elements.articleJsonLd.textContent = "";
+    return;
+  }
+
+  const jsonld = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.excerpt,
+    url: `${SITE_URL}?post=${encodeURIComponent(post.slug)}`,
+    mainEntityOfPage: `${SITE_URL}?post=${encodeURIComponent(post.slug)}`,
+    datePublished: post.createdAt,
+    dateModified: post.updatedAt,
+    inLanguage: state.locale === "en" ? "en-US" : "zh-CN",
+    author: {
+      "@type": "Person",
+      name: "PlatoJobs",
+      url: "https://github.com/platojobs"
+    },
+    publisher: {
+      "@type": "Person",
+      name: "PlatoJobs",
+      url: "https://github.com/platojobs"
+    },
+    image: `${SITE_URL}og-card.png?v=20260527-ogpng1`,
+    articleSection: getCategory(post),
+    keywords: getArticleKeywords(post),
+    wordCount: Math.max(1, post.readingTime * 220)
+  };
+
+  elements.articleJsonLd.textContent = JSON.stringify(jsonld);
+}
+
 function updateSeo(post) {
   const canonical = post ? `${SITE_URL}?post=${encodeURIComponent(post.slug)}` : SITE_URL;
   const title = post ? `${post.title} | ${SITE_NAME}` : SITE_TITLE;
@@ -319,6 +363,7 @@ function updateSeo(post) {
   setMetaContent(elements.ogType, post ? "article" : "website");
   setMetaContent(elements.twitterTitle, title);
   setMetaContent(elements.twitterDescription, description);
+  updateArticleJsonLd(post);
   updateLocaleLinks();
 }
 
