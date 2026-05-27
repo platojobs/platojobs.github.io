@@ -1,5 +1,18 @@
 [
   {
+    "number": 353,
+    "title": "Flutter 3.44 与 Google I/O 2026 同时发布",
+    "slug": "353-flutter-3-44-与-google-i-o-2026-同时发布",
+    "createdAt": "2026-05-27T08:00:15Z",
+    "updatedAt": "2026-05-27T08:00:15Z",
+    "issueUrl": "https://github.com/platojobs/SFLOG/issues/353",
+    "labels": [
+      "Abstract"
+    ],
+    "excerpt": "Flutter 3.44 与 Google I/O 2026 同时发布。这一次，重点似乎更多地放在改变日常开发体验的更新上，而不是炫酷的新功能上。 需要特别注意的几点 首先，让我们挑出你绝对必须知道的关键点。 🤖 Agentic 热重载：AI 编码代理自动连接到您正在运行的 Flutter 应用，并为您处理热重载。 🎨 Material/Cupertin",
+    "readingTime": 9
+  },
+  {
     "number": 352,
     "title": "Historically, material.dart and cupertino.dart were bundled directly inside the Flutter SDK. Starting with Flutter 3.44",
     "slug": "352-historically-material-dart-and-cupertino-dart-were-bundled-directly-inside-the-flutter-sdk-starting-with-flutter-3-44",
