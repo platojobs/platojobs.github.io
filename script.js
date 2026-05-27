@@ -337,7 +337,7 @@ function updateArticleJsonLd(post) {
       name: "PlatoJobs",
       url: "https://github.com/platojobs"
     },
-    image: `${SITE_URL}og-card.png?v=20260527-ogpng1`,
+    image: `${SITE_URL}og-card.png?v=20260527-ogpng2`,
     articleSection: getCategory(post),
     keywords: getArticleKeywords(post),
     wordCount: Math.max(1, post.readingTime * 220)
