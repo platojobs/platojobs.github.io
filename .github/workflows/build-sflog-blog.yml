@@ -1,0 +1,72 @@
+name: Build SFLOG Blog
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [sflog-updated]
+  push:
+    branches:
+      - main
+    paths:
+      - index.html
+      - styles.css
+      - script.js
+      - scripts/build-sflog-blog.mjs
+      - .github/workflows/build-sflog-blog.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sflog-blog-build
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout site repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Clone SFLOG source
+        run: git clone https://github.com/platojobs/SFLOG.git ../SFLOG
+
+      - name: Export SFLOG issue metadata
+        env:
+          PRIMARY_TOKEN: ${{ secrets.SF_L }}
+          FALLBACK_TOKEN: ${{ github.token }}
+        run: |
+          TOKEN="$PRIMARY_TOKEN"
+          if [ -z "$TOKEN" ]; then
+            TOKEN="$FALLBACK_TOKEN"
+          fi
+          GH_TOKEN="$TOKEN" gh api 'repos/platojobs/SFLOG/issues?state=all&per_page=100' \
+            --paginate \
+            --jq '.[] | {number, title, created_at, updated_at, html_url, labels: [.labels[].name]}' \
+            > sflog-issues.jsonl
+
+      - name: Build static blog data
+        run: node scripts/build-sflog-blog.mjs --source ../SFLOG --meta ./sflog-issues.jsonl --out .
+
+      - name: Remove temporary metadata file
+        run: rm -f sflog-issues.jsonl
+
+      - name: Commit and push generated blog
+        env:
+          TOKEN: ${{ secrets.SF_L }}
+        run: |
+          git config user.name "platojobs"
+          git config user.email "platojobs@qq.com"
+          git add blog-content blog-data
+          git commit -m "chore: rebuild SFLOG blog" || echo "nothing to commit"
+
+          if [ -n "$TOKEN" ]; then
+            git push "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git" HEAD:main
+          else
+            git push origin HEAD:main || echo "nothing to push"
+          fi
