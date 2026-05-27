@@ -4,7 +4,14 @@
     <title>PlatoJobs</title>
     <link>https://platojobs.github.io/</link>
     <description>PlatoJobs personal blog powered by GitHub Issues.</description>
-    <lastBuildDate>Wed, 27 May 2026 07:45:50 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 27 May 2026 07:53:34 GMT</lastBuildDate>
+    <item>
+      <title>Historically, material.dart and cupertino.dart were bundled directly inside the Flutter SDK. Starting with Flutter 3.44</title>
+      <link>https://platojobs.github.io/?post=352-historically-material-dart-and-cupertino-dart-were-bundled-directly-inside-the-flutter-sdk-starting-with-flutter-3-44</link>
+      <guid>https://platojobs.github.io/?post=352-historically-material-dart-and-cupertino-dart-were-bundled-directly-inside-the-flutter-sdk-starting-with-flutter-3-44</guid>
+      <pubDate>Wed, 27 May 2026 07:53:34 GMT</pubDate>
+      <description>Still, this release changes several important parts of the ecosystem. Some of those changes are infrastructural, almost invisible. But they will affect daily development much more </description>
+    </item>
     <item>
       <title>If two people in a close relationship are highly integrated,</title>
       <link>https://platojobs.github.io/?post=351-if-two-people-in-a-close-relationship-are-highly-integrated</link>
@@ -347,13 +354,6 @@
       <guid>https://platojobs.github.io/?post=303-%E4%BA%BA%E7%94%9F%E7%9F%AD%E6%9A%82</guid>
       <pubDate>Thu, 24 Aug 2023 02:22:41 GMT</pubDate>
       <description>莫言曾说： “你细心观察一下你的身边人， 凡是动不动就生气的人， 没有一个是智者， 生活多半过得一团糟糕。” 他告诉我们， 那些经常发脾气的人都不是聪明的人， 平心静气都解决不了生活中的问题。 发脾气只会让问题变得更糟， 真正的智者是在解决问题的过程中展现智慧。 谁的生活都是一地鸡毛， 凡事都生气， 大怒伤肝、大思伤脾， 大忧伤肺、大恐伤肾 ， 暴躁会留在子</description>
-    </item>
-    <item>
-      <title>星期一，喝抹茶</title>
-      <link>https://platojobs.github.io/?post=302-%E6%98%9F%E6%9C%9F%E4%B8%80-%E5%96%9D%E6%8A%B9%E8%8C%B6</link>
-      <guid>https://platojobs.github.io/?post=302-%E6%98%9F%E6%9C%9F%E4%B8%80-%E5%96%9D%E6%8A%B9%E8%8C%B6</guid>
-      <pubDate>Tue, 22 Aug 2023 03:29:29 GMT</pubDate>
-      <description>我喜欢花江阿姨紧紧抱住我的心情，一点都不奇怪。我深吸一口气，再次环视四周。是大家养育了我。太阳、云朵、风……树木、花草、鸟兽、虫子……爸爸、妈妈、花江阿姨。奶奶、爷爷。小优、露露、宫司叔叔。学校的老师、同学、游泳课的教练……这个大家，数也数不清。吸引我来到这里的如幻影般的螳螂，也包括在内。</description>
     </item>
   </channel>
 </rss>

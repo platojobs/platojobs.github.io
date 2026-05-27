@@ -1,5 +1,18 @@
 [
   {
+    "number": 352,
+    "title": "Historically, material.dart and cupertino.dart were bundled directly inside the Flutter SDK. Starting with Flutter 3.44",
+    "slug": "352-historically-material-dart-and-cupertino-dart-were-bundled-directly-inside-the-flutter-sdk-starting-with-flutter-3-44",
+    "createdAt": "2026-05-27T07:53:34Z",
+    "updatedAt": "2026-05-27T07:53:34Z",
+    "issueUrl": "https://github.com/platojobs/SFLOG/issues/352",
+    "labels": [
+      "BookReading"
+    ],
+    "excerpt": "Still, this release changes several important parts of the ecosystem. Some of those changes are infrastructural, almost invisible. But they will affect daily development much more ",
+    "readingTime": 1
+  },
+  {
     "number": 351,
     "title": "If two people in a close relationship are highly integrated,",
     "slug": "351-if-two-people-in-a-close-relationship-are-highly-integrated",
