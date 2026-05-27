@@ -563,6 +563,11 @@ body.modal-open .timeline-column {
   gap: 18px;
 }
 
+.article-layout > * {
+  min-width: 0;
+  max-width: 100%;
+}
+
 .article-hero {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -717,16 +722,28 @@ body.modal-open .timeline-column {
 
 .article-body pre {
   overflow: auto;
+  max-width: 100%;
   margin: 1.4rem 0;
   padding: 18px 20px;
   border-radius: 18px;
   background: #0d1117;
   border: 1px solid var(--line);
   color: #e6edf3;
+  -webkit-overflow-scrolling: touch;
+  white-space: pre;
+  overflow-wrap: normal;
+  word-break: normal;
 }
 
 .article-body code {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.article-body pre code {
+  display: block;
+  white-space: pre;
+  overflow-wrap: normal;
+  word-break: normal;
 }
 
 .article-body :not(pre) > code {
