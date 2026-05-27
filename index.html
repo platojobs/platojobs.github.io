@@ -6,107 +6,108 @@
     <title>SFLog | platojobs</title>
     <meta
       name="description"
-      content="SFLog by platojobs: a GitHub issues powered reading blog, automatically built and deployed with GitHub Pages."
+      content="SFLog by platojobs: a paginated issue-powered reading blog on GitHub Pages."
     />
-    <meta name="theme-color" content="#c95c33" />
+    <meta name="theme-color" content="#101214" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <div class="page-shell">
-      <div class="orb orb-left"></div>
-      <div class="orb orb-right"></div>
-
-      <header class="site-header">
+    <div class="app-shell">
+      <aside class="left-rail">
         <a class="brand" href="./">SFLog</a>
-        <nav class="site-nav" aria-label="Primary">
-          <a href="#posts">文章</a>
-          <a href="#reader">阅读</a>
-          <a href="https://github.com/platojobs/SFLOG" target="_blank" rel="noreferrer">仓库</a>
-        </nav>
-      </header>
+        <p class="brand-copy">
+          用 GitHub issue 写作，用 GitHub Pages 阅读。
+        </p>
 
-      <main>
-        <section class="hero">
-          <div class="hero-copy">
-            <p class="eyebrow">Issues to Pages</p>
-            <h1>把 SFLog 的 issue 内容，变成一份真正可读的博客。</h1>
-            <p class="hero-text">
-              写作仍然发生在 GitHub issue 里，展示则交给 GitHub Pages。
-              自动构建、自动部署、统一排版、适合长期阅读。
-            </p>
-            <div class="hero-actions">
-              <a class="button button-primary" href="#posts">开始阅读</a>
-              <a class="button button-secondary" href="https://github.com/platojobs/SFLOG/issues" target="_blank" rel="noreferrer">
-                去写新文章
-              </a>
-            </div>
-          </div>
-
-          <aside class="hero-panel">
-            <div class="stat-card">
-              <span class="stat-label">文章总数</span>
-              <strong id="total-posts">--</strong>
-            </div>
-            <div class="stat-card">
-              <span class="stat-label">最近更新</span>
-              <strong id="latest-date">--</strong>
-            </div>
-            <div class="stat-card">
-              <span class="stat-label">内容标签</span>
-              <strong id="label-count">--</strong>
-            </div>
-          </aside>
-        </section>
-
-        <section id="posts" class="panel intro-panel">
-          <div class="panel-head">
+        <div class="rail-card">
+          <p class="rail-label">Overview</p>
+          <dl class="stats">
             <div>
-              <p class="section-kicker">Browse</p>
-              <h2>按标签和关键词筛选文章。</h2>
+              <dt>Posts</dt>
+              <dd id="total-posts">--</dd>
             </div>
-            <p class="panel-copy">
-              数据来自 `platojobs/SFLOG`，页面由静态生成脚本输出，适合 GitHub Pages 直接部署。
-            </p>
+            <div>
+              <dt>Labels</dt>
+              <dd id="label-count">--</dd>
+            </div>
+            <div>
+              <dt>Latest</dt>
+              <dd id="latest-date">--</dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="rail-card">
+          <label class="search-block">
+            <span class="rail-label">Search</span>
+            <input id="search-input" type="search" placeholder="搜索标题、摘要、标签" />
+          </label>
+        </div>
+
+        <div class="rail-card">
+          <p class="rail-label">Labels</p>
+          <div id="label-filters" class="label-filters"></div>
+        </div>
+      </aside>
+
+      <main class="timeline-column">
+        <header class="timeline-header">
+          <div>
+            <p class="eyebrow">Issue Journal</p>
+            <h1>文章摘要流</h1>
           </div>
+          <a class="compose-link" href="https://github.com/platojobs/SFLOG/issues" target="_blank" rel="noreferrer">
+            写新文章
+          </a>
+        </header>
 
-          <div class="toolbar">
-            <label class="search">
-              <span class="search-label">搜索</span>
-              <input id="search-input" type="search" placeholder="搜索标题、摘要、标签" />
-            </label>
-            <div id="label-filters" class="label-filters" aria-label="Label filters"></div>
+        <div class="timeline-toolbar">
+          <p id="result-count" class="result-count">加载中...</p>
+          <div class="page-size">
+            <label for="page-size-select">每页</label>
+            <select id="page-size-select">
+              <option value="5">5</option>
+              <option value="8" selected>8</option>
+              <option value="10">10</option>
+            </select>
           </div>
-        </section>
+        </div>
 
-        <section class="blog-layout">
-          <aside class="post-list-panel panel">
-            <div class="list-header">
-              <div>
-                <p class="section-kicker">Posts</p>
-                <h2>文章列表</h2>
-              </div>
-              <p id="result-count" class="result-count">加载中...</p>
-            </div>
-            <div id="post-list" class="post-list" aria-live="polite"></div>
-          </aside>
+        <section id="post-list" class="post-list" aria-live="polite"></section>
 
-          <article id="reader" class="reader-panel panel">
-            <div id="reader-shell" class="reader-shell">
-              <div class="reader-empty">
-                <p class="section-kicker">Reader</p>
-                <h2>从左侧选择一篇文章开始阅读。</h2>
-                <p>如果带着 `?post=` 链接进入，页面会自动打开对应文章。</p>
-              </div>
-            </div>
-          </article>
-        </section>
+        <nav class="pagination" aria-label="Pagination">
+          <button id="prev-page" class="pager-button" type="button">上一页</button>
+          <span id="page-indicator" class="page-indicator">-- / --</span>
+          <button id="next-page" class="pager-button" type="button">下一页</button>
+        </nav>
       </main>
+
+      <aside class="reader-column">
+        <div class="reader-card">
+          <div id="reader-shell" class="reader-shell">
+            <div class="reader-empty">
+              <p class="eyebrow">Reader</p>
+              <h2>选择一篇文章开始阅读。</h2>
+              <p>列表只显示摘要，点击后在这里展开完整内容。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="comments-card">
+          <p class="eyebrow">Comments</p>
+          <h3>评论系统预留</h3>
+          <p>
+            这里后续可以接入 Giscus、Utterances 或自定义 issue comments，
+            当前先保留位置和样式结构。
+          </p>
+        </div>
+      </aside>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
