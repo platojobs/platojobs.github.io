@@ -50,6 +50,10 @@
     <link rel="icon" type="image/svg+xml" href="./logo.svg?v=20260527-cat3" />
     <link rel="manifest" href="./site.webmanifest" />
     <link rel="alternate" type="application/rss+xml" title="PlatoJobs RSS" href="./feed.xml" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github-dark-dimmed.min.css"
+    />
     <link rel="stylesheet" href="./styles.css?v=20260527-readerfix1" />
     <script type="application/ld+json">
       {
@@ -98,6 +102,15 @@
         <p class="brand-copy">
           Days without expectations go smoothly.
         </p>
+
+        <div class="rail-card">
+          <p class="rail-label" data-i18n="explore">Explore</p>
+          <div class="section-nav">
+            <a id="nav-home" class="section-nav-link is-active" href="./?lang=zh" data-view="home" data-i18n="home">首页</a>
+            <a id="nav-archive" class="section-nav-link" href="./?lang=zh&view=archive" data-view="archive" data-i18n="archive">归档</a>
+            <a id="nav-about" class="section-nav-link" href="./?lang=zh&view=about" data-view="about" data-i18n="about">关于我</a>
+          </div>
+        </div>
 
         <div class="rail-card">
           <p class="rail-label" data-i18n="overview">Overview</p>
@@ -240,6 +253,7 @@
       </aside>
 
       <main class="timeline-column">
+        <section id="home-view" class="main-view">
         <header class="timeline-header">
           <div>
             <p class="eyebrow" data-i18n="writing_archive">Writing Archive</p>
@@ -277,6 +291,54 @@
         </nav>
 
         <nav id="seo-post-links" class="seo-post-links" aria-label="Article links"></nav>
+        </section>
+
+        <section id="archive-view" class="main-view archive-view" hidden>
+          <header class="timeline-header">
+            <div>
+              <p class="eyebrow" data-i18n="archive">Archive</p>
+              <h1 data-i18n="archive_title">文章归档</h1>
+            </div>
+          </header>
+          <div id="archive-shell" class="archive-shell"></div>
+        </section>
+
+        <section id="about-view" class="main-view about-view" hidden>
+          <header class="timeline-header">
+            <div>
+              <p class="eyebrow" data-i18n="about">About</p>
+              <h1 data-i18n="about_title">关于我</h1>
+            </div>
+          </header>
+          <article class="about-card">
+            <p class="about-lead" data-i18n="about_lead">
+              PlatoJobs，记录技术写作、阅读笔记、思考和生活片段。
+            </p>
+            <div class="about-grid">
+              <section class="about-block">
+                <p class="eyebrow" data-i18n="about_focus">Focus</p>
+                <h3 data-i18n="about_focus_title">我在写什么</h3>
+                <p data-i18n="about_focus_body">
+                  主要围绕 Flutter、Swift、移动开发、工具链、阅读笔记，以及一些日常思考。
+                </p>
+              </section>
+              <section class="about-block">
+                <p class="eyebrow" data-i18n="about_way">Way</p>
+                <h3 data-i18n="about_way_title">这个网站想做什么</h3>
+                <p data-i18n="about_way_body">
+                  它不是作品集式陈列，而是一个持续更新的个人写作网站，适合慢慢阅读、回看和订阅。
+                </p>
+              </section>
+              <section class="about-block">
+                <p class="eyebrow" data-i18n="about_contact">Contact</p>
+                <h3 data-i18n="about_contact_title">如何联系我</h3>
+                <p data-i18n="about_contact_body">
+                  你可以通过 GitHub、X，或者页面左侧的两个 Gmail 地址联系我。
+                </p>
+              </section>
+            </div>
+          </article>
+        </section>
       </main>
 
     </div>
@@ -298,7 +360,7 @@
           <button id="drawer-close" class="drawer-close" type="button" aria-label="关闭阅读面板" data-i18n="close">Close</button>
         </div>
 
-        <div class="reader-card">
+      <div class="reader-card">
           <div id="reader-shell" class="reader-shell">
             <div class="reader-empty">
               <p class="eyebrow" data-i18n="reader">Reader</p>
@@ -355,6 +417,7 @@
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
     <script src="./script.js?v=20260527-readerfix1"></script>
   </body>
 </html>

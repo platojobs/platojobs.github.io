@@ -3,6 +3,7 @@ const state = {
   filtered: [],
   activeLabel: "All",
   activeSlug: "",
+  activeView: "home",
   search: "",
   page: 1,
   pageSize: 8,
@@ -18,6 +19,9 @@ const elements = {
   latestDate: document.querySelector("#latest-date"),
   langZh: document.querySelector("#lang-zh"),
   langEn: document.querySelector("#lang-en"),
+  navHome: document.querySelector("#nav-home"),
+  navArchive: document.querySelector("#nav-archive"),
+  navAbout: document.querySelector("#nav-about"),
   labelFilters: document.querySelector("#label-filters"),
   labelsToggle: document.querySelector("#labels-toggle"),
   friendLinks: document.querySelector("#friend-links"),
@@ -28,6 +32,10 @@ const elements = {
   searchInput: document.querySelector("#search-input"),
   resultCount: document.querySelector("#result-count"),
   postList: document.querySelector("#post-list"),
+  homeView: document.querySelector("#home-view"),
+  archiveView: document.querySelector("#archive-view"),
+  aboutView: document.querySelector("#about-view"),
+  archiveShell: document.querySelector("#archive-shell"),
   seoPostLinks: document.querySelector("#seo-post-links"),
   readerShell: document.querySelector("#reader-shell"),
   commentsStatus: document.querySelector("#comments-status"),
@@ -68,6 +76,22 @@ const TRANSLATIONS = {
   zh: {
     locale: "zh-CN",
     site_description: "PlatoJobs 的个人网站，聚合技术写作、阅读笔记、思考记录与生活片段。",
+    explore: "探索",
+    home: "首页",
+    archive: "归档",
+    archive_title: "文章归档",
+    about: "关于我",
+    about_title: "关于我",
+    about_lead: "PlatoJobs，记录技术写作、阅读笔记、思考和生活片段。",
+    about_focus: "Focus",
+    about_focus_title: "我在写什么",
+    about_focus_body: "主要围绕 Flutter、Swift、移动开发、工具链、阅读笔记，以及一些日常思考。",
+    about_way: "Way",
+    about_way_title: "这个网站想做什么",
+    about_way_body: "它不是作品集式陈列，而是一个持续更新的个人写作网站，适合慢慢阅读、回看和订阅。",
+    about_contact: "Contact",
+    about_contact_title: "如何联系我",
+    about_contact_body: "你可以通过 GitHub、X，或者页面左侧的两个 Gmail 地址联系我。",
     overview: "概览",
     posts: "文章",
     labels: "标签",
@@ -123,6 +147,10 @@ const TRANSLATIONS = {
     comments_loading: "评论区加载中...",
     comments_empty_title: "暂无评论",
     comments_empty_body: "还没有人先开口，等你留下第一条想法。",
+    related_posts: "相关文章",
+    no_related_posts: "更多相关文章还在路上。",
+    prev_post: "上一篇",
+    next_post: "下一篇",
     loading_posts: "加载中...",
     loading_failed: "加载失败",
     loading_failed_body: "博客数据加载失败，请稍后重试。"
@@ -130,6 +158,22 @@ const TRANSLATIONS = {
   en: {
     locale: "en-US",
     site_description: "PlatoJobs personal website for technical writing, reading notes, reflections, and life fragments.",
+    explore: "Explore",
+    home: "Home",
+    archive: "Archive",
+    archive_title: "Archive",
+    about: "About",
+    about_title: "About",
+    about_lead: "PlatoJobs writes about technical work, reading notes, reflections, and life fragments.",
+    about_focus: "Focus",
+    about_focus_title: "What I write about",
+    about_focus_body: "Mostly Flutter, Swift, mobile engineering, tooling, reading notes, and a few everyday reflections.",
+    about_way: "Way",
+    about_way_title: "What this website is for",
+    about_way_body: "It is not a portfolio shelf. It is a living personal website built for slow reading, revisiting, and subscribing.",
+    about_contact: "Contact",
+    about_contact_title: "How to reach me",
+    about_contact_body: "You can find me through GitHub, X, or the two Gmail addresses in the left rail.",
     overview: "Overview",
     posts: "Posts",
     labels: "Labels",
@@ -185,6 +229,10 @@ const TRANSLATIONS = {
     comments_loading: "Loading comments...",
     comments_empty_title: "No comments yet",
     comments_empty_body: "No one has started the conversation yet. You could be the first.",
+    related_posts: "Related Posts",
+    no_related_posts: "More related writing is on the way.",
+    prev_post: "Previous",
+    next_post: "Next",
     loading_posts: "Loading...",
     loading_failed: "Load failed",
     loading_failed_body: "Failed to load blog data. Please try again later."
@@ -289,7 +337,15 @@ function getQueryLocale() {
   return new URL(window.location.href).searchParams.get("lang") || "";
 }
 
-function updateQueryState({ slug = state.activeSlug, locale = state.locale } = {}) {
+function getQueryView() {
+  return new URL(window.location.href).searchParams.get("view") || "";
+}
+
+function updateQueryState({
+  slug = state.activeSlug,
+  locale = state.locale,
+  view = state.activeView
+} = {}) {
   const url = new URL(window.location.href);
   if (slug) {
     url.searchParams.set("post", slug);
@@ -301,18 +357,31 @@ function updateQueryState({ slug = state.activeSlug, locale = state.locale } = {
   } else {
     url.searchParams.delete("lang");
   }
+  if (view && view !== "home") {
+    url.searchParams.set("view", view);
+  } else {
+    url.searchParams.delete("view");
+  }
   window.history.replaceState({}, "", url);
 }
 
 function updateLocaleLinks() {
   const url = new URL(window.location.href);
-  const makeHref = (locale) => {
+  const makeHref = (locale, view = state.activeView) => {
     const next = new URL(url);
     next.searchParams.set("lang", locale);
+    if (view && view !== "home") {
+      next.searchParams.set("view", view);
+    } else {
+      next.searchParams.delete("view");
+    }
     return `${next.pathname}${next.search}${next.hash}`;
   };
   elements.langZh?.setAttribute("href", makeHref("zh"));
   elements.langEn?.setAttribute("href", makeHref("en"));
+  elements.navHome?.setAttribute("href", makeHref(state.locale, "home"));
+  elements.navArchive?.setAttribute("href", makeHref(state.locale, "archive"));
+  elements.navAbout?.setAttribute("href", makeHref(state.locale, "about"));
 }
 
 function setMetaContent(element, value) {
@@ -551,6 +620,54 @@ function updateReadingProgressFromScroll() {
   setReadingProgress(current / distance);
 }
 
+function setArticleActionFeedback(button, message) {
+  if (!button) return;
+  const original = button.dataset.originalLabel || button.textContent || "";
+  if (!button.dataset.originalLabel) {
+    button.dataset.originalLabel = original;
+  }
+  button.textContent = message;
+  window.clearTimeout(Number(button.dataset.feedbackTimer || 0));
+  const timer = window.setTimeout(() => {
+    button.textContent = button.dataset.originalLabel || original;
+    button.dataset.feedbackTimer = "";
+  }, 1600);
+  button.dataset.feedbackTimer = String(timer);
+}
+
+async function copyTextWithFallback(text) {
+  if (navigator.clipboard?.writeText) {
+    await navigator.clipboard.writeText(text);
+    return true;
+  }
+
+  const textarea = document.createElement("textarea");
+  textarea.value = text;
+  textarea.setAttribute("readonly", "true");
+  textarea.style.position = "absolute";
+  textarea.style.left = "-9999px";
+  textarea.style.top = "0";
+  document.body.appendChild(textarea);
+  textarea.focus();
+  textarea.select();
+  textarea.setSelectionRange(0, textarea.value.length);
+  let copied = false;
+  try {
+    copied = document.execCommand("copy");
+  } finally {
+    textarea.remove();
+  }
+
+  if (copied) {
+    return true;
+  }
+
+  if (typeof window.prompt === "function") {
+    window.prompt(t("copy_link"), text);
+  }
+  return false;
+}
+
 function startBrandTyping() {
   if (!elements.brandText) return;
 
@@ -658,6 +775,18 @@ function renderLanguageToggle() {
   elements.langEn?.classList.toggle("is-active", state.locale === "en");
 }
 
+function renderSectionNav() {
+  const navMap = {
+    home: elements.navHome,
+    archive: elements.navArchive,
+    about: elements.navAbout
+  };
+
+  Object.entries(navMap).forEach(([view, node]) => {
+    node?.classList.toggle("is-active", state.activeView === view);
+  });
+}
+
 function renderExpandToggles() {
   if (elements.friendsToggle) {
     elements.friendsToggle.textContent = state.friendsExpanded ? t("show_less") : t("show_all");
@@ -693,9 +822,97 @@ function renderFilters() {
   renderExpandToggles();
 }
 
+function renderMainViews() {
+  elements.homeView.hidden = state.activeView !== "home";
+  elements.archiveView.hidden = state.activeView !== "archive";
+  elements.aboutView.hidden = state.activeView !== "about";
+  renderSectionNav();
+}
+
 function getPagedPosts() {
   const start = (state.page - 1) * state.pageSize;
   return state.filtered.slice(start, start + state.pageSize);
+}
+
+function renderArchive() {
+  if (!elements.archiveShell) return;
+
+  const grouped = state.posts.reduce((map, post) => {
+    const year = new Date(post.createdAt).getFullYear();
+    if (!map.has(year)) {
+      map.set(year, []);
+    }
+    map.get(year).push(post);
+    return map;
+  }, new Map());
+
+  const years = Array.from(grouped.keys()).sort((a, b) => b - a);
+
+  elements.archiveShell.innerHTML = years
+    .map((year) => {
+      const posts = grouped.get(year) || [];
+      return `
+        <section class="archive-group">
+          <div class="archive-year">${year}</div>
+          <div class="archive-list">
+            ${posts
+              .map((post) => {
+                const category = getCategory(post);
+                return `
+                  <button class="archive-item" type="button" data-slug="${escapeHtml(post.slug)}">
+                    <span class="archive-item-date">${formatDate(post.createdAt)}</span>
+                    <span class="archive-item-title">${escapeHtml(post.title)}</span>
+                    <span class="archive-item-category" style="${getLabelStyleAttr(category)}">${escapeHtml(category)}</span>
+                  </button>
+                `;
+              })
+              .join("")}
+          </div>
+        </section>
+      `;
+    })
+    .join("");
+
+  elements.archiveShell.querySelectorAll("[data-slug]").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.activeView = "home";
+      renderMainViews();
+      void openPost(button.dataset.slug);
+    });
+  });
+}
+
+function scoreRelatedPost(source, candidate) {
+  if (!source || !candidate || source.slug === candidate.slug) return -1;
+  let score = 0;
+  if (getCategory(source) === getCategory(candidate)) score += 5;
+  const sourceLabels = new Set(source.labels);
+  candidate.labels.forEach((label) => {
+    if (sourceLabels.has(label)) score += 2;
+  });
+  const delta =
+    Math.abs(new Date(source.createdAt).getTime() - new Date(candidate.createdAt).getTime()) /
+    86400000;
+  score += Math.max(0, 2 - Math.min(2, delta / 365));
+  return score;
+}
+
+function getRelatedPosts(post, limit = 4) {
+  return state.posts
+    .filter((candidate) => candidate.slug !== post.slug)
+    .map((candidate) => ({ candidate, score: scoreRelatedPost(post, candidate) }))
+    .filter((entry) => entry.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map((entry) => entry.candidate);
+}
+
+function getPrevNextPosts(post) {
+  const index = state.posts.findIndex((entry) => entry.slug === post.slug);
+  return {
+    nextPost: index > 0 ? state.posts[index - 1] : null,
+    prevPost: index >= 0 && index < state.posts.length - 1 ? state.posts[index + 1] : null
+  };
 }
 
 function renderPagination() {
@@ -814,6 +1031,80 @@ function enhanceArticleMarkup(html) {
   return template.innerHTML;
 }
 
+function highlightCodeBlocks(root = elements.readerShell) {
+  const codeBlocks = root?.querySelectorAll("pre code");
+  if (!codeBlocks?.length) return;
+
+  if (window.hljs?.highlightElement) {
+    codeBlocks.forEach((block) => {
+      if (!block.dataset.highlighted) {
+        window.hljs.highlightElement(block);
+      }
+      const pre = block.parentElement;
+      const classMatch = Array.from(block.classList).find((name) => name.startsWith("language-"));
+      const explicitLanguage = classMatch ? classMatch.replace("language-", "") : "";
+      const detectedLanguage = block.result?.language || explicitLanguage;
+      if (pre && detectedLanguage) {
+        pre.dataset.language = formatCodeLanguageLabel(detectedLanguage);
+      }
+    });
+    return;
+  }
+
+  window.setTimeout(() => highlightCodeBlocks(root), 120);
+}
+
+function formatCodeLanguageLabel(language) {
+  const normalized = String(language || "")
+    .trim()
+    .toLowerCase()
+    .replaceAll("_", "-");
+
+  const aliases = {
+    objectivec: "Objective-C",
+    "objective-c": "Objective-C",
+    objc: "Objective-C",
+    oc: "Objective-C",
+    js: "JavaScript",
+    javascript: "JavaScript",
+    ts: "TypeScript",
+    typescript: "TypeScript",
+    py: "Python",
+    csharp: "C#",
+    cs: "C#",
+    cpp: "C++",
+    "c++": "C++",
+    sh: "Shell",
+    shell: "Shell",
+    bash: "Bash",
+    zsh: "Zsh",
+    md: "Markdown",
+    markdown: "Markdown",
+    yml: "YAML",
+    yaml: "YAML",
+    json: "JSON",
+    xml: "XML",
+    html: "HTML",
+    css: "CSS",
+    scss: "SCSS",
+    kotlin: "Kotlin",
+    swift: "Swift",
+    dart: "Dart",
+    java: "Java",
+    go: "Go",
+    rust: "Rust",
+    ruby: "Ruby",
+    php: "PHP",
+    sql: "SQL"
+  };
+
+  if (aliases[normalized]) {
+    return aliases[normalized];
+  }
+
+  return normalized.replace(/(^|-)([a-z])/g, (_, prefix, char) => `${prefix}${char.toUpperCase()}`);
+}
+
 async function renderArticle(post) {
   elements.modalShell?.scrollTo({ top: 0, behavior: "auto" });
   elements.readerShell.innerHTML = `<div class="loading-state">${escapeHtml(t("loading_article"))}</div>`;
@@ -826,6 +1117,8 @@ async function renderArticle(post) {
   const markdown = await response.text();
   const html = enhanceArticleMarkup(marked.parse(markdown));
   const category = getCategory(post);
+  const relatedPosts = getRelatedPosts(post, 4);
+  const { prevPost, nextPost } = getPrevNextPosts(post);
   const tags = getTags(post)
     .map(
       (tag) => `<span class="tag-chip" style="${getLabelStyleAttr(tag)}">${escapeHtml(tag)}</span>`
@@ -840,7 +1133,7 @@ async function renderArticle(post) {
           <h2 class="article-title">${escapeHtml(post.title)}</h2>
         </div>
         <div class="article-actions">
-          <a class="article-link" href="${post.issueUrl}" target="_blank" rel="noreferrer">${escapeHtml(t("open_issue"))}</a>
+          <a class="article-link" href="${post.issueUrl}" rel="noreferrer">${escapeHtml(t("open_issue"))}</a>
           <button class="article-link article-link-secondary" id="copy-article-link" type="button">${escapeHtml(t("copy_link"))}</button>
         </div>
       </header>
@@ -872,34 +1165,89 @@ async function renderArticle(post) {
       <section class="article-content-card">
         <div class="article-body">${html}</div>
       </section>
+
+      <section class="article-bottom-stack">
+        <div class="article-nav-grid">
+          ${
+            prevPost
+              ? `
+                <button class="article-nav-card" type="button" data-nav-slug="${escapeHtml(prevPost.slug)}">
+                  <span class="article-nav-label">${escapeHtml(t("prev_post"))}</span>
+                  <strong>${escapeHtml(prevPost.title)}</strong>
+                </button>
+              `
+              : ""
+          }
+          ${
+            nextPost
+              ? `
+                <button class="article-nav-card" type="button" data-nav-slug="${escapeHtml(nextPost.slug)}">
+                  <span class="article-nav-label">${escapeHtml(t("next_post"))}</span>
+                  <strong>${escapeHtml(nextPost.title)}</strong>
+                </button>
+              `
+              : ""
+          }
+        </div>
+
+        <section class="related-posts">
+          <div class="related-posts-head">
+            <h3>${escapeHtml(t("related_posts"))}</h3>
+          </div>
+          ${
+            relatedPosts.length
+              ? `
+                <div class="related-post-list">
+                  ${relatedPosts
+                    .map((item) => {
+                      const itemCategory = getCategory(item);
+                      return `
+                        <button class="related-post-link" type="button" data-related-slug="${escapeHtml(item.slug)}">
+                          <span class="related-post-title">${escapeHtml(item.title)}</span>
+                          <span class="related-post-meta">
+                            <span class="related-post-kicker">${escapeHtml(itemCategory)}</span>
+                            <span class="related-post-arrow" aria-hidden="true">↗</span>
+                          </span>
+                        </button>
+                      `;
+                    })
+                    .join("")}
+                </div>
+              `
+              : `<p class="related-empty">${escapeHtml(t("no_related_posts"))}</p>`
+          }
+        </section>
+      </section>
     </article>
   `;
 
   document.querySelector("#copy-article-link")?.addEventListener("click", async () => {
+    const copyButton = document.querySelector("#copy-article-link");
     const articleUrl = `${SITE_URL}?post=${encodeURIComponent(post.slug)}&lang=${state.locale}`;
     try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(articleUrl);
-      } else {
-        const textarea = document.createElement("textarea");
-        textarea.value = articleUrl;
-        textarea.style.position = "absolute";
-        textarea.style.left = "-9999px";
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand("copy");
-        textarea.remove();
-      }
-      if (elements.commentsStatus) {
-        elements.commentsStatus.textContent = t("link_copied");
-      }
+      const copied = await copyTextWithFallback(articleUrl);
+      setArticleActionFeedback(copyButton, copied ? t("link_copied") : t("link_copy_failed"));
     } catch {
-      if (elements.commentsStatus) {
-        elements.commentsStatus.textContent = t("link_copy_failed");
+      if (typeof window.prompt === "function") {
+        window.prompt(t("copy_link"), articleUrl);
       }
+      setArticleActionFeedback(copyButton, t("link_copy_failed"));
     }
   });
 
+  document.querySelectorAll("[data-nav-slug]").forEach((button) => {
+    button.addEventListener("click", () => {
+      void openPost(button.dataset.navSlug);
+    });
+  });
+
+  document.querySelectorAll("[data-related-slug]").forEach((button) => {
+    button.addEventListener("click", () => {
+      void openPost(button.dataset.relatedSlug);
+    });
+  });
+
+  highlightCodeBlocks(elements.readerShell);
   elements.modalShell?.scrollTo({ top: 0, behavior: "auto" });
   updateReadingProgressFromScroll();
 }
@@ -908,7 +1256,7 @@ async function openPost(slug) {
   const post = state.posts.find((item) => item.slug === slug);
   if (!post) return;
   state.activeSlug = slug;
-  updateQueryState({ slug, locale: state.locale });
+  updateQueryState({ slug, locale: state.locale, view: state.activeView });
   updateSeo(post);
   renderPosts();
   openDrawer();
@@ -917,6 +1265,27 @@ async function openPost(slug) {
 }
 
 function bindControls() {
+  elements.navHome?.addEventListener("click", (event) => {
+    event.preventDefault();
+    state.activeView = "home";
+    updateQueryState({ view: "home", slug: state.activeSlug, locale: state.locale });
+    renderMainViews();
+  });
+
+  elements.navArchive?.addEventListener("click", (event) => {
+    event.preventDefault();
+    state.activeView = "archive";
+    updateQueryState({ view: "archive", slug: state.activeSlug, locale: state.locale });
+    renderMainViews();
+  });
+
+  elements.navAbout?.addEventListener("click", (event) => {
+    event.preventDefault();
+    state.activeView = "about";
+    updateQueryState({ view: "about", slug: state.activeSlug, locale: state.locale });
+    renderMainViews();
+  });
+
   elements.searchInput.addEventListener("input", (event) => {
     state.search = event.target.value;
     state.page = 1;
@@ -967,23 +1336,9 @@ function bindControls() {
 
   elements.copyFeedLink?.addEventListener("click", async () => {
     try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(FEED_URL);
-      } else {
-        const field = elements.feedUrl;
-        if (!field) {
-          throw new Error("feed field missing");
-        }
-        field.focus();
-        field.select();
-        field.setSelectionRange(0, field.value.length);
-        const copied = document.execCommand("copy");
-        if (!copied) {
-          throw new Error("execCommand copy failed");
-        }
-      }
+      const copied = await copyTextWithFallback(FEED_URL);
       if (elements.feedCopyStatus) {
-        elements.feedCopyStatus.textContent = t("subscribe_copied");
+        elements.feedCopyStatus.textContent = copied ? t("subscribe_copied") : t("subscribe_copy_failed");
       }
     } catch {
       const field = elements.feedUrl;
@@ -991,6 +1346,9 @@ function bindControls() {
         field.focus();
         field.select();
         field.setSelectionRange(0, field.value.length);
+      }
+      if (typeof window.prompt === "function") {
+        window.prompt(t("copy_feed"), FEED_URL);
       }
       if (elements.feedCopyStatus) {
         elements.feedCopyStatus.textContent = t("subscribe_copy_failed");
@@ -1014,13 +1372,16 @@ async function setLocale(locale) {
   if (state.locale === locale) return;
   state.locale = locale;
   saveStoredLocale(locale);
-  updateQueryState({ slug: state.activeSlug, locale });
+  updateQueryState({ slug: state.activeSlug, locale, view: state.activeView });
   renderStaticI18n();
   renderLanguageToggle();
+  renderSectionNav();
   renderExpandToggles();
   updateLocaleLinks();
   renderStats();
   renderFilters();
+  renderArchive();
+  renderMainViews();
   renderPosts();
   updateSeo(state.posts.find((post) => post.slug === state.activeSlug));
   if (state.activeSlug) {
@@ -1047,20 +1408,27 @@ async function boot() {
   } else if ((navigator.language || "").toLowerCase().startsWith("en")) {
     state.locale = "en";
   }
+  const queryView = getQueryView();
+  if (queryView === "archive" || queryView === "about" || queryView === "home") {
+    state.activeView = queryView;
+  }
   startBrandTyping();
   renderStaticI18n();
   renderLanguageToggle();
+  renderSectionNav();
   renderExpandToggles();
   elements.resultCount.textContent = t("loading_posts");
   resetComments(t("comments_thread_hint"));
   const response = await fetch("./blog-data/posts.json");
   state.posts = await response.json();
   state.activeSlug = getQuerySlug();
-  updateQueryState({ slug: state.activeSlug, locale: state.locale });
+  updateQueryState({ slug: state.activeSlug, locale: state.locale, view: state.activeView });
 
   renderSeoLinks();
   renderStats();
   renderFilters();
+  renderArchive();
+  renderMainViews();
   bindControls();
 
   applyFilters();
