@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>platojobs | GitHub Pages</title>
+    <meta
+      name="description"
+      content="platojobs on GitHub: a crafted landing page for experiments, products, and open web work."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Sora:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <div class="ambient ambient-left"></div>
+      <div class="ambient ambient-right"></div>
+
+      <header class="site-header reveal">
+        <a class="brand" href="#top">platojobs</a>
+        <nav class="site-nav" aria-label="Primary">
+          <a href="#about">About</a>
+          <a href="#repos">Repos</a>
+          <a href="#notes">Notes</a>
+        </nav>
+      </header>
+
+      <main id="top">
+        <section class="hero reveal">
+          <div class="hero-copy">
+            <p class="eyebrow">GitHub Pages / Portfolio Landing</p>
+            <h1>
+              Building sharp, useful, and a little unexpected things for the
+              web.
+            </h1>
+            <p class="hero-text">
+              This is the public front door for <strong>platojobs</strong>:
+              experiments, polished side projects, and open-source work in
+              progress.
+            </p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="https://github.com/platojobs"
+                >View GitHub</a
+              >
+              <a class="button button-secondary" href="#repos">Browse Repos</a>
+            </div>
+          </div>
+
+          <aside class="hero-panel">
+            <div class="panel-card panel-grid">
+              <div>
+                <span class="stat-label">Focus</span>
+                <strong>Design-minded code</strong>
+              </div>
+              <div>
+                <span class="stat-label">Mode</span>
+                <strong>Shipping in public</strong>
+              </div>
+              <div>
+                <span class="stat-label">Stack</span>
+                <strong>Web, tools, automation</strong>
+              </div>
+              <div>
+                <span class="stat-label">Home</span>
+                <strong>GitHub Pages</strong>
+              </div>
+            </div>
+          </aside>
+        </section>
+
+        <section id="about" class="section two-column reveal">
+          <div>
+            <p class="section-kicker">About</p>
+            <h2>A calm base for projects that deserve a better first impression.</h2>
+          </div>
+          <div class="section-copy">
+            <p>
+              Instead of a plain repository index, this page gives your GitHub
+              presence a visual identity: editorial typography, layered color,
+              responsive layout, and live project data pulled from GitHub.
+            </p>
+            <p>
+              It is intentionally lightweight, easy to host, and easy to keep.
+              Push to the repository and GitHub Pages does the rest.
+            </p>
+          </div>
+        </section>
+
+        <section id="repos" class="section reveal">
+          <div class="section-head">
+            <div>
+              <p class="section-kicker">Selected Work</p>
+              <h2>Public repositories, loaded live.</h2>
+            </div>
+            <p class="section-aside">
+              The cards below are fetched from GitHub, sorted by recent activity.
+            </p>
+          </div>
+          <div id="repo-grid" class="repo-grid" aria-live="polite">
+            <article class="repo-card repo-card-loading">
+              <p>Loading repositories...</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="notes" class="section notes reveal">
+          <div class="note-card">
+            <p class="section-kicker">Approach</p>
+            <h2>Simple infrastructure, crafted presentation.</h2>
+            <p>
+              The best personal sites are easy to maintain. This one is plain
+              HTML, CSS, and JavaScript, which means fast loads, effortless
+              hosting, and room to evolve later.
+            </p>
+          </div>
+
+          <div class="quote-card">
+            <p class="quote-mark">"</p>
+            <p class="quote-text">
+              Make it useful. Make it legible. Then make it memorable.
+            </p>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer reveal">
+        <p>platojobs.github.io</p>
+        <a href="https://github.com/platojobs">github.com/platojobs</a>
+      </footer>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
