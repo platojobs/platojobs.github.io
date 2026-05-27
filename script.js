@@ -456,6 +456,17 @@ function renderLanguageToggle() {
   elements.langEn?.classList.toggle("is-active", state.locale === "en");
 }
 
+function renderExpandToggles() {
+  if (elements.friendsToggle) {
+    elements.friendsToggle.textContent = state.friendsExpanded ? t("show_less") : t("show_all");
+    elements.friendsToggle.setAttribute("aria-expanded", String(state.friendsExpanded));
+  }
+  if (elements.labelsToggle) {
+    elements.labelsToggle.textContent = state.labelsExpanded ? t("show_less") : t("show_all");
+    elements.labelsToggle.setAttribute("aria-expanded", String(state.labelsExpanded));
+  }
+}
+
 function renderFilters() {
   const labels = getAllLabels(state.posts);
   elements.labelFilters.innerHTML = labels
@@ -477,10 +488,7 @@ function renderFilters() {
   });
 
   elements.labelFilters.classList.toggle("is-collapsed-mobile", !state.labelsExpanded);
-  if (elements.labelsToggle) {
-    elements.labelsToggle.setAttribute("aria-expanded", String(state.labelsExpanded));
-    elements.labelsToggle.textContent = state.labelsExpanded ? t("show_less") : t("show_all");
-  }
+  renderExpandToggles();
 }
 
 function getPagedPosts() {
@@ -658,16 +666,14 @@ function bindControls() {
 
   elements.friendsToggle?.addEventListener("click", () => {
     state.friendsExpanded = !state.friendsExpanded;
-    elements.friendsToggle.setAttribute("aria-expanded", String(state.friendsExpanded));
-    elements.friendsToggle.textContent = state.friendsExpanded ? t("show_less") : t("show_all");
     elements.friendLinks?.classList.toggle("is-collapsed-mobile", !state.friendsExpanded);
+    renderExpandToggles();
   });
 
   elements.labelsToggle?.addEventListener("click", () => {
     state.labelsExpanded = !state.labelsExpanded;
-    elements.labelsToggle.setAttribute("aria-expanded", String(state.labelsExpanded));
-    elements.labelsToggle.textContent = state.labelsExpanded ? t("show_less") : t("show_all");
     elements.labelFilters?.classList.toggle("is-collapsed-mobile", !state.labelsExpanded);
+    renderExpandToggles();
   });
 
   elements.langZh?.addEventListener("click", (event) => {
@@ -695,6 +701,7 @@ async function setLocale(locale) {
   updateQueryState({ slug: state.activeSlug, locale });
   renderStaticI18n();
   renderLanguageToggle();
+  renderExpandToggles();
   updateLocaleLinks();
   renderStats();
   renderFilters();
@@ -727,6 +734,7 @@ async function boot() {
   startBrandTyping();
   renderStaticI18n();
   renderLanguageToggle();
+  renderExpandToggles();
   elements.resultCount.textContent = t("loading_posts");
   resetComments(t("comments_thread_hint"));
   const response = await fetch("./blog-data/posts.json");
