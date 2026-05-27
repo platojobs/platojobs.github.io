@@ -303,6 +303,46 @@ a {
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.16);
 }
 
+.social-link {
+  position: relative;
+  overflow: hidden;
+}
+
+.friend-link {
+  position: relative;
+  overflow: hidden;
+}
+
+.social-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 42%);
+  opacity: 0;
+  transition: opacity 180ms ease;
+  pointer-events: none;
+}
+
+.social-link:hover::after,
+.social-link:focus-visible::after {
+  opacity: 1;
+}
+
+.friend-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), transparent 44%);
+  opacity: 0;
+  transition: opacity 180ms ease;
+  pointer-events: none;
+}
+
+.friend-link:hover::after,
+.friend-link:focus-visible::after {
+  opacity: 1;
+}
+
 .icon-badge {
   grid-row: 1 / span 2;
   display: inline-flex;
@@ -316,6 +356,120 @@ a {
     linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent),
     rgba(255, 255, 255, 0.02);
   color: #a8d9ff;
+}
+
+.social-link .icon-badge {
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 10px 20px rgba(0, 0, 0, 0.18);
+}
+
+.friend-link .icon-badge {
+  border-color: rgba(255, 255, 255, 0.12);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015)),
+    rgba(10, 13, 17, 0.82);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 8px 18px rgba(0, 0, 0, 0.14);
+}
+
+.friend-link .ui-icon {
+  stroke-width: 2.15;
+  color: #f5f9ff;
+}
+
+.ui-icon--friend-nav {
+  width: 21px;
+  height: 21px;
+}
+
+.ui-icon--fluttermark {
+  width: 22px;
+  height: 22px;
+  stroke-width: 2.25;
+}
+
+.icon-badge--github {
+  background:
+    radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.24), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.03)),
+    rgba(255, 255, 255, 0.06);
+  color: #f4f7fb;
+}
+
+.icon-badge--x {
+  background:
+    radial-gradient(circle at 28% 24%, rgba(96, 197, 255, 0.24), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.03)),
+    rgba(29, 155, 240, 0.14);
+  color: #dff2ff;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 10px 24px rgba(29, 155, 240, 0.16);
+}
+
+.icon-badge--mail-primary {
+  background:
+    radial-gradient(circle at 28% 24%, rgba(245, 177, 76, 0.28), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.03)),
+    rgba(245, 177, 76, 0.14);
+  color: #ffe2aa;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 10px 24px rgba(245, 177, 76, 0.14);
+}
+
+.icon-badge--mail-secondary {
+  background:
+    radial-gradient(circle at 28% 24%, rgba(168, 85, 247, 0.28), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.03)),
+    rgba(168, 85, 247, 0.14);
+  color: #ead4ff;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 10px 24px rgba(168, 85, 247, 0.14);
+}
+
+.icon-badge--friend-carbon {
+  border-color: rgba(110, 193, 255, 0.22);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 2px 2px 0 rgba(110, 193, 255, 0.12),
+    0 8px 18px rgba(0, 0, 0, 0.14);
+}
+
+.icon-badge--friend-openbb {
+  border-color: rgba(94, 234, 212, 0.22);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 2px 2px 0 rgba(94, 234, 212, 0.12),
+    0 8px 18px rgba(0, 0, 0, 0.14);
+}
+
+.icon-badge--friend-awesome {
+  border-color: rgba(250, 204, 21, 0.2);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 2px 2px 0 rgba(250, 204, 21, 0.11),
+    0 8px 18px rgba(0, 0, 0, 0.14);
+}
+
+.icon-badge--friend-swift {
+  border-color: rgba(251, 146, 60, 0.22);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 2px 2px 0 rgba(251, 146, 60, 0.12),
+    0 8px 18px rgba(0, 0, 0, 0.14);
+}
+
+.icon-badge--friend-flutter {
+  border-color: rgba(96, 197, 255, 0.22);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 2px 2px 0 rgba(96, 197, 255, 0.12),
+    0 8px 18px rgba(0, 0, 0, 0.14);
 }
 
 .ui-icon {
