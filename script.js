@@ -1133,7 +1133,7 @@ async function renderArticle(post) {
           <h2 class="article-title">${escapeHtml(post.title)}</h2>
         </div>
         <div class="article-actions">
-          <a class="article-link" href="${post.issueUrl}" rel="noreferrer">${escapeHtml(t("open_issue"))}</a>
+          <button class="article-link" id="open-article-source" type="button">${escapeHtml(t("open_issue"))}</button>
           <button class="article-link article-link-secondary" id="copy-article-link" type="button">${escapeHtml(t("copy_link"))}</button>
         </div>
       </header>
@@ -1221,6 +1221,10 @@ async function renderArticle(post) {
     </article>
   `;
 
+  document.querySelector("#open-article-source")?.addEventListener("click", () => {
+    window.location.href = post.issueUrl;
+  });
+
   document.querySelector("#copy-article-link")?.addEventListener("click", async () => {
     const copyButton = document.querySelector("#copy-article-link");
     const articleUrl = `${SITE_URL}?post=${encodeURIComponent(post.slug)}&lang=${state.locale}`;
@@ -1228,9 +1232,6 @@ async function renderArticle(post) {
       const copied = await copyTextWithFallback(articleUrl);
       setArticleActionFeedback(copyButton, copied ? t("link_copied") : t("link_copy_failed"));
     } catch {
-      if (typeof window.prompt === "function") {
-        window.prompt(t("copy_link"), articleUrl);
-      }
       setArticleActionFeedback(copyButton, t("link_copy_failed"));
     }
   });
