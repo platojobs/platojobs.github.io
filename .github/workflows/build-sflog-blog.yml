@@ -62,7 +62,7 @@ jobs:
         run: |
           git config user.name "platojobs"
           git config user.email "platojobs@qq.com"
-          git add blog-content blog-data
+          git add blog-content blog-data robots.txt sitemap.xml feed.xml
           git commit -m "chore: rebuild SFLOG blog" || echo "nothing to commit"
 
           if [ -n "$TOKEN" ]; then

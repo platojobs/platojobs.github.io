@@ -9,6 +9,7 @@ const state = {
 };
 
 const elements = {
+  brandText: document.querySelector("#brand-text"),
   totalPosts: document.querySelector("#total-posts"),
   labelCount: document.querySelector("#label-count"),
   latestDate: document.querySelector("#latest-date"),
@@ -16,12 +17,33 @@ const elements = {
   searchInput: document.querySelector("#search-input"),
   resultCount: document.querySelector("#result-count"),
   postList: document.querySelector("#post-list"),
+  seoPostLinks: document.querySelector("#seo-post-links"),
   readerShell: document.querySelector("#reader-shell"),
+  commentsStatus: document.querySelector("#comments-status"),
+  commentsThread: document.querySelector("#comments-thread"),
+  drawer: document.querySelector("#reader-drawer"),
+  drawerOverlay: document.querySelector("#drawer-overlay"),
+  drawerClose: document.querySelector("#drawer-close"),
+  canonicalUrl: document.querySelector("#canonical-url"),
+  metaDescription: document.querySelector("#meta-description"),
+  ogTitle: document.querySelector("#og-title"),
+  ogDescription: document.querySelector("#og-description"),
+  ogUrl: document.querySelector("#og-url"),
+  ogType: document.querySelector("#og-type"),
+  twitterTitle: document.querySelector("#twitter-title"),
+  twitterDescription: document.querySelector("#twitter-description"),
   pageIndicator: document.querySelector("#page-indicator"),
   prevPage: document.querySelector("#prev-page"),
   nextPage: document.querySelector("#next-page"),
   pageSizeSelect: document.querySelector("#page-size-select")
 };
+
+const BRAND_WORDS = ["Hello World"];
+const SITE_NAME = "PlatoJobs";
+const SITE_TITLE = "Hello World | PlatoJobs";
+const SITE_DESCRIPTION = "PlatoJobs 的个人博客，基于 GitHub Issues 写作与沉淀，聚合阅读、思考、技术笔记与生活片段。";
+const SITE_URL = "https://platojobs.github.io/";
+const COMMENTS_REPO = "platojobs/SFLOG";
 
 function formatDate(dateString) {
   if (!dateString) return "--";
@@ -41,6 +63,52 @@ function escapeHtml(value) {
     .replaceAll("'", "&#39;");
 }
 
+const labelPalettes = [
+  {
+    bg: "rgba(29, 155, 240, 0.14)",
+    fg: "#8fd0ff",
+    border: "rgba(29, 155, 240, 0.28)"
+  },
+  {
+    bg: "rgba(54, 179, 126, 0.14)",
+    fg: "#8ce7ba",
+    border: "rgba(54, 179, 126, 0.28)"
+  },
+  {
+    bg: "rgba(245, 177, 76, 0.14)",
+    fg: "#ffd48b",
+    border: "rgba(245, 177, 76, 0.28)"
+  },
+  {
+    bg: "rgba(168, 85, 247, 0.14)",
+    fg: "#d7b2ff",
+    border: "rgba(168, 85, 247, 0.28)"
+  },
+  {
+    bg: "rgba(244, 114, 182, 0.14)",
+    fg: "#ffb7db",
+    border: "rgba(244, 114, 182, 0.28)"
+  },
+  {
+    bg: "rgba(20, 184, 166, 0.14)",
+    fg: "#8ff3e8",
+    border: "rgba(20, 184, 166, 0.28)"
+  }
+];
+
+function getLabelStyle(label) {
+  let hash = 0;
+  for (const char of label) {
+    hash = (hash * 31 + char.charCodeAt(0)) >>> 0;
+  }
+  return labelPalettes[hash % labelPalettes.length];
+}
+
+function getLabelStyleAttr(label) {
+  const palette = getLabelStyle(label);
+  return `--pill-bg:${palette.bg};--pill-fg:${palette.fg};--pill-border:${palette.border};`;
+}
+
 function getQuerySlug() {
   return new URL(window.location.href).searchParams.get("post") || "";
 }
@@ -53,6 +121,112 @@ function updateQuerySlug(slug) {
     url.searchParams.delete("post");
   }
   window.history.replaceState({}, "", url);
+}
+
+function setMetaContent(element, value) {
+  if (element && value) {
+    element.setAttribute("content", value);
+  }
+}
+
+function updateSeo(post) {
+  const canonical = post ? `${SITE_URL}?post=${encodeURIComponent(post.slug)}` : SITE_URL;
+  const title = post ? `${post.title} | ${SITE_NAME}` : SITE_TITLE;
+  const description = post ? `${post.excerpt} · ${SITE_NAME}` : SITE_DESCRIPTION;
+
+  document.title = title;
+  if (elements.canonicalUrl) {
+    elements.canonicalUrl.setAttribute("href", canonical);
+  }
+  setMetaContent(elements.metaDescription, description);
+  setMetaContent(elements.ogTitle, title);
+  setMetaContent(elements.ogDescription, description);
+  setMetaContent(elements.ogUrl, canonical);
+  setMetaContent(elements.ogType, post ? "article" : "website");
+  setMetaContent(elements.twitterTitle, title);
+  setMetaContent(elements.twitterDescription, description);
+}
+
+function openDrawer() {
+  elements.drawerOverlay.hidden = false;
+  elements.drawer.classList.add("is-open");
+  elements.drawer.setAttribute("aria-hidden", "false");
+  document.body.classList.add("modal-open");
+  document.body.style.overflow = "hidden";
+}
+
+function closeDrawer() {
+  elements.drawer.classList.remove("is-open");
+  elements.drawer.setAttribute("aria-hidden", "true");
+  elements.drawerOverlay.hidden = true;
+  document.body.classList.remove("modal-open");
+  document.body.style.overflow = "";
+}
+
+function resetComments(message) {
+  if (elements.commentsThread) {
+    elements.commentsThread.innerHTML = "";
+  }
+  if (elements.commentsStatus) {
+    elements.commentsStatus.textContent = message;
+  }
+}
+
+function renderComments(post) {
+  if (!elements.commentsThread) return;
+
+  elements.commentsThread.innerHTML = "";
+  if (elements.commentsStatus) {
+    elements.commentsStatus.innerHTML = `
+      当前评论承接自 <a href="${post.issueUrl}" target="_blank" rel="noreferrer">GitHub Issue #${post.number}</a>。
+    `;
+  }
+
+  const script = document.createElement("script");
+  script.src = "https://utteranc.es/client.js";
+  script.async = true;
+  script.crossOrigin = "anonymous";
+  script.setAttribute("repo", COMMENTS_REPO);
+  script.setAttribute("issue-number", String(post.number));
+  script.setAttribute("theme", "github-dark");
+  script.setAttribute("loading", "lazy");
+  elements.commentsThread.appendChild(script);
+}
+
+function startBrandTyping() {
+  if (!elements.brandText) return;
+
+  let wordIndex = 0;
+  let charIndex = 0;
+  let deleting = false;
+
+  const tick = () => {
+    const currentWord = BRAND_WORDS[wordIndex];
+
+    if (deleting) {
+      charIndex = Math.max(0, charIndex - 1);
+    } else {
+      charIndex = Math.min(currentWord.length, charIndex + 1);
+    }
+
+    elements.brandText.textContent = currentWord.slice(0, charIndex);
+
+    let delay = deleting ? 55 : 95;
+
+    if (!deleting && charIndex === currentWord.length) {
+      delay = 1350;
+      deleting = true;
+    } else if (deleting && charIndex === 0) {
+      deleting = false;
+      wordIndex = (wordIndex + 1) % BRAND_WORDS.length;
+      delay = 260;
+    }
+
+    window.setTimeout(tick, delay);
+  };
+
+  elements.brandText.textContent = "";
+  window.setTimeout(tick, 280);
 }
 
 function getCategory(post) {
@@ -135,6 +309,16 @@ function renderPagination() {
   elements.nextPage.disabled = state.page >= totalPages;
 }
 
+function renderSeoLinks() {
+  if (!elements.seoPostLinks) return;
+  elements.seoPostLinks.innerHTML = state.posts
+    .map(
+      (post) =>
+        `<a href="./?post=${encodeURIComponent(post.slug)}">${escapeHtml(post.title)}</a>`
+    )
+    .join("");
+}
+
 function renderPosts() {
   elements.resultCount.textContent = `${state.filtered.length} 篇文章`;
   renderPagination();
@@ -151,13 +335,16 @@ function renderPosts() {
       const category = getCategory(post);
       const tags = getTags(post)
         .slice(0, 3)
-        .map((tag) => `<span class="tag-chip">${escapeHtml(tag)}</span>`)
+        .map(
+          (tag) =>
+            `<span class="tag-chip" style="${getLabelStyleAttr(tag)}">${escapeHtml(tag)}</span>`
+        )
         .join("");
 
       return `
         <article class="post-card${activeClass}" data-slug="${escapeHtml(post.slug)}">
           <div class="post-top">
-            <span class="post-category">${escapeHtml(category)}</span>
+            <span class="post-category" style="${getLabelStyleAttr(category)}">${escapeHtml(category)}</span>
             <span class="post-number">#${post.number}</span>
           </div>
           <h3>${escapeHtml(post.title)}</h3>
@@ -193,28 +380,53 @@ async function renderArticle(post) {
   const html = marked.parse(markdown);
   const category = getCategory(post);
   const tags = getTags(post)
-    .map((tag) => `<span class="tag-chip">${escapeHtml(tag)}</span>`)
+    .map(
+      (tag) => `<span class="tag-chip" style="${getLabelStyleAttr(tag)}">${escapeHtml(tag)}</span>`
+    )
     .join("");
 
   elements.readerShell.innerHTML = `
-    <div class="article-head">
-      <div>
-        <p class="eyebrow">Issue #${post.number}</p>
-        <h2 class="article-title">${escapeHtml(post.title)}</h2>
-        <div class="article-meta">
-          <span>Published ${formatDate(post.createdAt)}</span>
-          <span>Updated ${formatDate(post.updatedAt)}</span>
-          <span>${post.readingTime} min read</span>
+    <article class="article-layout">
+      <header class="article-hero">
+        <div class="article-hero-copy">
+          <p class="eyebrow">Issue #${post.number}</p>
+          <h2 class="article-title">${escapeHtml(post.title)}</h2>
+          <p class="article-subtitle">${escapeHtml(post.excerpt)}</p>
         </div>
-      </div>
-      <a class="article-link" href="${post.issueUrl}" target="_blank" rel="noreferrer">Open Issue</a>
-    </div>
-    <div class="article-tags">
-      <span class="post-category">${escapeHtml(category)}</span>
-      ${tags}
-    </div>
-    <div class="article-body">${html}</div>
+        <div class="article-actions">
+          <a class="article-link" href="${post.issueUrl}" target="_blank" rel="noreferrer">Open Issue</a>
+        </div>
+      </header>
+
+      <section class="article-meta-panel">
+        <div class="meta-group">
+          <span class="meta-label">Published</span>
+          <strong>${formatDate(post.createdAt)}</strong>
+        </div>
+        <div class="meta-group">
+          <span class="meta-label">Updated</span>
+          <strong>${formatDate(post.updatedAt)}</strong>
+        </div>
+        <div class="meta-group">
+          <span class="meta-label">Reading Time</span>
+          <strong>${post.readingTime} min</strong>
+        </div>
+        <div class="meta-group meta-group-wide">
+          <span class="meta-label">Category & Tags</span>
+          <div class="article-tags">
+            <span class="post-category" style="${getLabelStyleAttr(category)}">${escapeHtml(category)}</span>
+            ${tags}
+          </div>
+        </div>
+      </section>
+
+      <section class="article-content-card">
+        <div class="article-body">${html}</div>
+      </section>
+    </article>
   `;
+
+  renderComments(post);
 }
 
 async function openPost(slug) {
@@ -222,7 +434,9 @@ async function openPost(slug) {
   if (!post) return;
   state.activeSlug = slug;
   updateQuerySlug(slug);
+  updateSeo(post);
   renderPosts();
+  openDrawer();
   await renderArticle(post);
 }
 
@@ -253,13 +467,24 @@ function bindControls() {
     state.page += 1;
     renderPosts();
   });
+
+  elements.drawerOverlay.addEventListener("click", closeDrawer);
+  elements.drawerClose.addEventListener("click", closeDrawer);
+  window.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeDrawer();
+    }
+  });
 }
 
 async function boot() {
+  startBrandTyping();
+  resetComments("打开文章后，这里会加载对应 issue 的评论线程。");
   const response = await fetch("./blog-data/posts.json");
   state.posts = await response.json();
   state.activeSlug = getQuerySlug();
 
+  renderSeoLinks();
   renderStats();
   renderFilters();
   bindControls();
@@ -273,7 +498,14 @@ async function boot() {
     state.posts[0];
 
   if (initialPost) {
-    await openPost(initialPost.slug);
+    if (state.activeSlug) {
+      await openPost(initialPost.slug);
+    } else {
+      updateSeo();
+      await renderArticle(initialPost);
+    }
+  } else {
+    updateSeo();
   }
 }
 

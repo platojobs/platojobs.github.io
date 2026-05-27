@@ -4,6 +4,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 
 const IGNORED_LABELS = new Set(["TODO", "Friends"]);
+const SITE_URL = "https://platojobs.github.io";
 
 function parseArgs(argv) {
   const args = {};
@@ -50,6 +51,15 @@ function readingTimeFromText(text) {
   return Math.max(1, Math.round(length / 500));
 }
 
+function escapeXml(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+}
+
 async function ensureDir(dir) {
   await fs.mkdir(dir, { recursive: true });
 }
@@ -66,6 +76,65 @@ async function readMetadata(metaPath) {
 async function cleanDir(dir) {
   await fs.rm(dir, { recursive: true, force: true });
   await ensureDir(dir);
+}
+
+async function writeRobots(outDir) {
+  const robots = `User-agent: *\nAllow: /\n\nSitemap: ${SITE_URL}/sitemap.xml\n`;
+  await fs.writeFile(path.join(outDir, "robots.txt"), robots, "utf8");
+}
+
+async function writeSitemap(outDir, posts) {
+  const urls = [
+    { loc: `${SITE_URL}/`, lastmod: posts[0]?.updatedAt || new Date().toISOString() },
+    ...posts.map((post) => ({
+      loc: `${SITE_URL}/?post=${encodeURIComponent(post.slug)}`,
+      lastmod: post.updatedAt || post.createdAt
+    }))
+  ];
+
+  const xml = [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ...urls.map(
+      (entry) =>
+        `  <url><loc>${escapeXml(entry.loc)}</loc><lastmod>${escapeXml(entry.lastmod)}</lastmod></url>`
+    ),
+    "</urlset>",
+    ""
+  ].join("\n");
+
+  await fs.writeFile(path.join(outDir, "sitemap.xml"), xml, "utf8");
+}
+
+async function writeFeed(outDir, posts) {
+  const updated = posts[0]?.updatedAt || new Date().toISOString();
+  const xml = [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<rss version="2.0">',
+    "  <channel>",
+    "    <title>PlatoJobs</title>",
+    `    <link>${SITE_URL}/</link>`,
+    "    <description>PlatoJobs personal blog powered by GitHub Issues.</description>",
+    `    <lastBuildDate>${new Date(updated).toUTCString()}</lastBuildDate>`,
+    ...posts.slice(0, 50).map((post) => {
+      const excerpt = escapeXml(post.excerpt || post.title);
+      const link = `${SITE_URL}/?post=${encodeURIComponent(post.slug)}`;
+      return [
+        "    <item>",
+        `      <title>${escapeXml(post.title)}</title>`,
+        `      <link>${escapeXml(link)}</link>`,
+        `      <guid>${escapeXml(link)}</guid>`,
+        `      <pubDate>${new Date(post.createdAt).toUTCString()}</pubDate>`,
+        `      <description>${excerpt}</description>`,
+        "    </item>"
+      ].join("\n");
+    }),
+    "  </channel>",
+    "</rss>",
+    ""
+  ].join("\n");
+
+  await fs.writeFile(path.join(outDir, "feed.xml"), xml, "utf8");
 }
 
 async function main() {
@@ -131,6 +200,10 @@ async function main() {
     JSON.stringify(posts, null, 2) + "\n",
     "utf8"
   );
+
+  await writeRobots(outDir);
+  await writeSitemap(outDir, posts);
+  await writeFeed(outDir, posts);
 
   console.log(`Generated ${posts.length} posts.`);
 }

@@ -3,26 +3,82 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SFLog | platojobs</title>
+    <title>Hello World | PlatoJobs</title>
     <meta
+      id="meta-description"
       name="description"
-      content="SFLog by platojobs: a paginated issue-powered reading blog on GitHub Pages."
+      content="PlatoJobs 的个人博客，基于 GitHub Issues 写作与沉淀，聚合阅读、思考、技术笔记与生活片段。"
     />
+    <meta name="author" content="PlatoJobs" />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
     <meta name="theme-color" content="#101214" />
+    <link id="canonical-url" rel="canonical" href="https://platojobs.github.io/" />
+    <meta property="og:site_name" content="PlatoJobs" />
+    <meta id="og-title" property="og:title" content="Hello World | PlatoJobs" />
+    <meta
+      id="og-description"
+      property="og:description"
+      content="PlatoJobs 的个人博客，基于 GitHub Issues 写作与沉淀。"
+    />
+    <meta id="og-url" property="og:url" content="https://platojobs.github.io/" />
+    <meta id="og-type" property="og:type" content="website" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:image" content="https://platojobs.github.io/og-card.svg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta id="twitter-title" name="twitter:title" content="Hello World | PlatoJobs" />
+    <meta
+      id="twitter-description"
+      name="twitter:description"
+      content="PlatoJobs 的个人博客，基于 GitHub Issues 写作与沉淀。"
+    />
+    <meta name="twitter:image" content="https://platojobs.github.io/og-card.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Source+Serif+4:opsz,wght@8..60,500;8..60,700&display=swap"
       rel="stylesheet"
     />
+    <link rel="icon" type="image/svg+xml" href="./logo.svg" />
+    <link rel="manifest" href="./site.webmanifest" />
+    <link rel="alternate" type="application/rss+xml" title="PlatoJobs RSS" href="./feed.xml" />
     <link rel="stylesheet" href="./styles.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Blog",
+        "name": "PlatoJobs",
+        "headline": "Hello World",
+        "description": "PlatoJobs 的个人博客，基于 GitHub Issues 写作与沉淀。",
+        "url": "https://platojobs.github.io/",
+        "inLanguage": "zh-CN",
+        "author": {
+          "@type": "Person",
+          "name": "PlatoJobs",
+          "url": "https://github.com/platojobs"
+        },
+        "publisher": {
+          "@type": "Person",
+          "name": "PlatoJobs",
+          "url": "https://github.com/platojobs"
+        }
+      }
+    </script>
   </head>
   <body>
     <div class="app-shell">
       <aside class="left-rail">
-        <a class="brand" href="./">SFLog</a>
+        <a class="brand-shell" href="./" aria-label="Hello World home">
+          <span class="brand-mark" aria-hidden="true">
+            <img src="./logo.svg" alt="" />
+          </span>
+          <span class="brand-terminal">
+            <span class="brand-prompt">&gt;</span>
+            <span id="brand-text" class="brand">Hello World</span>
+            <span class="brand-caret" aria-hidden="true"></span>
+          </span>
+        </a>
         <p class="brand-copy">
-          用 GitHub issue 写作，用 GitHub Pages 阅读。
+          Days without expectations go smoothly.
         </p>
 
         <div class="rail-card">
@@ -54,15 +110,88 @@
           <p class="rail-label">Labels</p>
           <div id="label-filters" class="label-filters"></div>
         </div>
+
+        <div class="rail-card">
+          <p class="rail-label">Social</p>
+          <div class="social-links">
+            <a class="social-link" href="https://github.com/platojobs" target="_blank" rel="noreferrer">
+              <span class="icon-badge" aria-hidden="true">
+                <svg viewBox="0 0 24 24" class="ui-icon"><path d="M9 19c-4.5 1.5-4.5-2.5-6-3m12 6v-3.9a3.4 3.4 0 0 0-.94-2.64c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 19 4.77 5.07 5.07 0 0 0 18.91 1S17.73.65 15 2.48a13.38 13.38 0 0 0-6 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.4 3.4 0 0 0 9 18.13V22"/></svg>
+              </span>
+              <span class="social-name">GitHub</span>
+              <span class="social-handle">@platojobs</span>
+            </a>
+            <a class="social-link" href="https://github.com/platojobs/SFLOG/issues" target="_blank" rel="noreferrer">
+              <span class="icon-badge" aria-hidden="true">
+                <svg viewBox="0 0 24 24" class="ui-icon"><path d="M8 2h8"/><path d="M9 2v2.5"/><path d="M15 2v2.5"/><rect x="4" y="4.5" width="16" height="17" rx="3"/><path d="M8 10h8"/><path d="M8 14h5"/></svg>
+              </span>
+              <span class="social-name">Issues</span>
+              <span class="social-handle">Write in public</span>
+            </a>
+            <a class="social-link" href="https://platojobs.github.io/" target="_blank" rel="noreferrer">
+              <span class="icon-badge" aria-hidden="true">
+                <svg viewBox="0 0 24 24" class="ui-icon"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a15.3 15.3 0 0 1 4 9 15.3 15.3 0 0 1-4 9 15.3 15.3 0 0 1-4-9 15.3 15.3 0 0 1 4-9Z"/></svg>
+              </span>
+              <span class="social-name">Pages</span>
+              <span class="social-handle">Live reading space</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="rail-card">
+          <p class="rail-label">Friends</p>
+          <div class="friend-links">
+            <a class="friend-link" href="https://github.com/carbon-language/carbon-lang" target="_blank" rel="noreferrer">
+              <span class="icon-badge" aria-hidden="true">
+                <svg viewBox="0 0 24 24" class="ui-icon"><path d="m7 7 10 10"/><path d="M17 7 7 17"/><circle cx="12" cy="12" r="9"/></svg>
+              </span>
+              <strong>carbon-language</strong>
+              <span>Carbon Language main repository</span>
+            </a>
+            <a class="friend-link" href="https://github.com/OpenBB-finance/OpenBBTerminal" target="_blank" rel="noreferrer">
+              <span class="icon-badge" aria-hidden="true">
+                <svg viewBox="0 0 24 24" class="ui-icon"><path d="M4 19h16"/><path d="M7 15V9"/><path d="M12 15V5"/><path d="M17 15v-3"/></svg>
+              </span>
+              <strong>OpenBB</strong>
+              <span>Investment research for everyone</span>
+            </a>
+            <a class="friend-link" href="https://github.com/vsouza/awesome-ios" target="_blank" rel="noreferrer">
+              <span class="icon-badge" aria-hidden="true">
+                <svg viewBox="0 0 24 24" class="ui-icon"><path d="M12 19c4.5 0 7-3.5 7-8 0-3.8-2.1-6.4-5.2-6.9"/><path d="M10.2 4.1C7.1 4.6 5 7.2 5 11c0 4.5 2.5 8 7 8"/><path d="M12 3v18"/></svg>
+              </span>
+              <strong>vsouza</strong>
+              <span>A curated awesome iOS ecosystem</span>
+            </a>
+            <a class="friend-link" href="https://github.com/apple/swift" target="_blank" rel="noreferrer">
+              <span class="icon-badge" aria-hidden="true">
+                <svg viewBox="0 0 24 24" class="ui-icon"><path d="M16 8c-1.6 0-2.4.9-4 .9S9.6 8 8 8c-2.2 0-4 1.8-4 4 0 3.4 2.8 7 5.5 7 .9 0 1.5-.4 2.5-.4s1.6.4 2.5.4C17.2 19 20 15.4 20 12c0-2.2-1.8-4-4-4Z"/><path d="M14.5 3.5c0 1.3-1 2.8-2.3 3.3-.3-1.4.7-2.9 2-3.5.1 0 .2.1.3.2Z"/></svg>
+              </span>
+              <strong>Apple Swift</strong>
+              <span>Modern and high-performance language</span>
+            </a>
+            <a class="friend-link" href="https://github.com/flutter/flutter" target="_blank" rel="noreferrer">
+              <span class="icon-badge" aria-hidden="true">
+                <svg viewBox="0 0 24 24" class="ui-icon"><path d="m6 16 6-6 6 6"/><path d="M12 4 4 12l4 4 8-8"/><path d="m14 14 4 4"/></svg>
+              </span>
+              <strong>Flutter</strong>
+              <span>Beautiful multi-platform UI toolkit</span>
+            </a>
+          </div>
+        </div>
       </aside>
 
       <main class="timeline-column">
         <header class="timeline-header">
           <div>
             <p class="eyebrow">Issue Journal</p>
-            <h1>文章摘要流</h1>
+            <h1>Article Abstract Flow</h1>
           </div>
-          <a class="compose-link" href="https://github.com/platojobs/SFLOG/issues" target="_blank" rel="noreferrer">
+          <a
+            class="compose-link"
+            href="https://github.com/platojobs/SFLOG/issues/new"
+            target="_blank"
+            rel="noreferrer"
+          >
             写新文章
           </a>
         </header>
@@ -86,9 +215,23 @@
           <span id="page-indicator" class="page-indicator">-- / --</span>
           <button id="next-page" class="pager-button" type="button">下一页</button>
         </nav>
+
+        <nav id="seo-post-links" class="seo-post-links" aria-label="Article links"></nav>
       </main>
 
-      <aside class="reader-column">
+    </div>
+
+    <div id="drawer-overlay" class="drawer-overlay" hidden></div>
+    <section id="reader-drawer" class="reader-modal" aria-hidden="true">
+      <div class="modal-shell">
+        <div class="drawer-topbar">
+          <div>
+            <p class="eyebrow">Reading View</p>
+            <h2 class="modal-title">专注模式</h2>
+          </div>
+          <button id="drawer-close" class="drawer-close" type="button" aria-label="关闭阅读面板">Close</button>
+        </div>
+
         <div class="reader-card">
           <div id="reader-shell" class="reader-shell">
             <div class="reader-empty">
@@ -101,14 +244,14 @@
 
         <div class="comments-card">
           <p class="eyebrow">Comments</p>
-          <h3>评论系统预留</h3>
-          <p>
-            这里后续可以接入 Giscus、Utterances 或自定义 issue comments，
-            当前先保留位置和样式结构。
+          <h3>Issue Comments</h3>
+          <p id="comments-status">
+            这里会承接当前文章对应 GitHub issue 的评论线程。
           </p>
+          <div id="comments-thread" class="comments-thread" aria-live="polite"></div>
         </div>
-      </aside>
-    </div>
+      </div>
+    </section>
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="./script.js"></script>
