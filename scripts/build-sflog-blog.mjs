@@ -123,7 +123,7 @@ async function writeFeed(outDir, posts) {
     "  <channel>",
     "    <title>PlatoJobs</title>",
     `    <link>${SITE_URL}/</link>`,
-    "    <description>PlatoJobs personal blog powered by GitHub Issues.</description>",
+    "    <description>PlatoJobs personal website for technical writing, reading notes, reflections, and life fragments.</description>",
     `    <lastBuildDate>${new Date(updated).toUTCString()}</lastBuildDate>`,
     ...posts.slice(0, 50).map((post) => {
       const excerpt = escapeXml(post.excerpt || post.title);

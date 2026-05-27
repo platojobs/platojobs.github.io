@@ -7,8 +7,9 @@
     <meta
       id="meta-description"
       name="description"
-      content="PlatoJobs 的个人博客，基于 GitHub Issues 写作与沉淀，聚合阅读、思考、技术笔记与生活片段。"
+      content="PlatoJobs 的个人网站，聚合技术写作、阅读笔记、思考记录与生活片段。"
     />
+    <meta name="keywords" content="PlatoJobs, 个人网站, 技术写作, 阅读笔记, 思考记录, Flutter, Swift, GitHub, 编程, 技术博客" />
     <meta name="author" content="PlatoJobs" />
     <meta name="robots" content="index,follow,max-image-preview:large" />
     <meta name="theme-color" content="#101214" />
@@ -18,20 +19,25 @@
     <meta
       id="og-description"
       property="og:description"
-      content="PlatoJobs 的个人博客，基于 GitHub Issues 写作与沉淀。"
+      content="PlatoJobs 的个人网站，聚合技术写作、阅读笔记、思考记录与生活片段。"
     />
     <meta id="og-url" property="og:url" content="https://www.platojobs.com/" />
     <meta id="og-type" property="og:type" content="website" />
     <meta property="og:locale" content="zh_CN" />
-    <meta property="og:image" content="https://www.platojobs.com/og-card.svg?v=20260527-cat3" />
+    <meta property="og:image" content="https://www.platojobs.com/og-card.png?v=20260527-ogpng1" />
+    <meta property="og:image:alt" content="PlatoJobs personal website brand card" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="1200" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta id="twitter-title" name="twitter:title" content="Hello World | PlatoJobs" />
     <meta
       id="twitter-description"
       name="twitter:description"
-      content="PlatoJobs 的个人博客，基于 GitHub Issues 写作与沉淀。"
+      content="PlatoJobs 的个人网站，聚合技术写作、阅读笔记、思考记录与生活片段。"
     />
-    <meta name="twitter:image" content="https://www.platojobs.com/og-card.svg?v=20260527-cat3" />
+    <meta name="twitter:image" content="https://www.platojobs.com/og-card.png?v=20260527-ogpng1" />
+    <meta name="twitter:image:alt" content="PlatoJobs personal website brand card" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -45,22 +51,26 @@
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "Blog",
-        "name": "PlatoJobs",
-        "headline": "Hello World",
-        "description": "PlatoJobs 的个人博客，基于 GitHub Issues 写作与沉淀。",
-        "url": "https://www.platojobs.com/",
-        "inLanguage": "zh-CN",
-        "author": {
-          "@type": "Person",
-          "name": "PlatoJobs",
-          "url": "https://github.com/platojobs"
-        },
-        "publisher": {
-          "@type": "Person",
-          "name": "PlatoJobs",
-          "url": "https://github.com/platojobs"
-        }
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "name": "PlatoJobs",
+            "headline": "Hello World",
+            "description": "PlatoJobs 的个人网站，聚合技术写作、阅读笔记、思考记录与生活片段。",
+            "url": "https://www.platojobs.com/",
+            "inLanguage": "zh-CN",
+            "about": ["Technical Writing", "Reading Notes", "Reflections", "Personal Website"]
+          },
+          {
+            "@type": "Person",
+            "name": "PlatoJobs",
+            "url": "https://github.com/platojobs",
+            "sameAs": [
+              "https://github.com/platojobs",
+              "https://x.com/platojobs"
+            ]
+          }
+        ]
       }
     </script>
   </head>
@@ -121,6 +131,24 @@
           >
             Show all
           </button>
+        </div>
+
+        <div class="rail-card">
+          <p class="rail-label" data-i18n="subscribe">订阅</p>
+          <p class="subscribe-note" data-i18n="subscribe_note">通过 RSS 订阅最新更新。</p>
+          <div class="subscribe-actions">
+            <a class="subscribe-link" href="./feed.xml" data-i18n="open_feed">打开 RSS</a>
+            <button id="copy-feed-link" class="subscribe-copy" type="button" data-i18n="copy_feed">复制订阅链接</button>
+          </div>
+          <input
+            id="feed-url"
+            class="subscribe-url"
+            type="text"
+            value="https://www.platojobs.com/feed.xml"
+            readonly
+            aria-label="RSS feed URL"
+          />
+          <p id="feed-copy-status" class="subscribe-status" data-i18n="subscribe_hint">支持 RSS 阅读器与订阅工具。</p>
         </div>
 
         <div class="rail-card">

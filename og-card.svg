@@ -16,7 +16,7 @@
   <text x="280" y="214" fill="#EEF4F8" font-size="88" font-family="'IBM Plex Sans', sans-serif" font-weight="700">PlatoJobs</text>
   <text x="280" y="304" fill="#8D99A5" font-size="34" font-family="'Instrument Serif', serif" font-style="italic">Days without expectations go smoothly.</text>
   <text x="96" y="492" fill="#59B7FF" font-size="30" font-family="'IBM Plex Mono', monospace">&gt; Hello World</text>
-  <text x="96" y="548" fill="#E7EBEF" font-size="40" font-family="'Source Serif 4', serif">GitHub Issues powered personal writing archive.</text>
+  <text x="96" y="548" fill="#E7EBEF" font-size="40" font-family="'Source Serif 4', serif">A personal archive of notes, reflections, and technical writing.</text>
   <defs>
     <radialGradient id="halo" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(132 118) rotate(47.29) scale(165.577)">
       <stop stop-color="#59B7FF" stop-opacity="0.28"/>

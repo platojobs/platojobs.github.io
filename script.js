@@ -22,6 +22,9 @@ const elements = {
   labelsToggle: document.querySelector("#labels-toggle"),
   friendLinks: document.querySelector("#friend-links"),
   friendsToggle: document.querySelector("#friends-toggle"),
+  copyFeedLink: document.querySelector("#copy-feed-link"),
+  feedUrl: document.querySelector("#feed-url"),
+  feedCopyStatus: document.querySelector("#feed-copy-status"),
   searchInput: document.querySelector("#search-input"),
   resultCount: document.querySelector("#result-count"),
   postList: document.querySelector("#post-list"),
@@ -50,13 +53,14 @@ const elements = {
 const BRAND_WORDS = ["Hello World"];
 const SITE_NAME = "PlatoJobs";
 const SITE_TITLE = "Hello World | PlatoJobs";
-const SITE_DESCRIPTION = "PlatoJobs 的个人博客，基于 GitHub Issues 写作与沉淀，聚合阅读、思考、技术笔记与生活片段。";
+const SITE_DESCRIPTION = "PlatoJobs 的个人网站，聚合技术写作、阅读笔记、思考记录与生活片段。";
 const SITE_URL = "https://www.platojobs.com/";
+const FEED_URL = `${SITE_URL}feed.xml`;
 const COMMENTS_REPO = "platojobs/SFLOG";
 const TRANSLATIONS = {
   zh: {
     locale: "zh-CN",
-    site_description: "PlatoJobs 的个人博客，基于 GitHub Issues 写作与沉淀，聚合阅读、思考、技术笔记与生活片段。",
+    site_description: "PlatoJobs 的个人网站，聚合技术写作、阅读笔记、思考记录与生活片段。",
     overview: "概览",
     posts: "文章",
     labels: "标签",
@@ -65,6 +69,13 @@ const TRANSLATIONS = {
     search: "搜索",
     search_placeholder: "搜索标题、摘要、标签",
     social: "社交",
+    subscribe: "订阅",
+    subscribe_note: "通过 RSS 订阅最新更新。",
+    open_feed: "打开 RSS",
+    copy_feed: "复制订阅链接",
+    subscribe_hint: "支持 RSS 阅读器与订阅工具。",
+    subscribe_copied: "订阅链接已复制。",
+    subscribe_copy_failed: "复制失败，请手动复制订阅地址。",
     friends: "友情链接",
     write_in_public: "公开写作",
     live_reading_space: "在线阅读空间",
@@ -105,7 +116,7 @@ const TRANSLATIONS = {
   },
   en: {
     locale: "en-US",
-    site_description: "PlatoJobs personal blog powered by GitHub Issues, collecting reading notes, reflections, technical logs, and life fragments.",
+    site_description: "PlatoJobs personal website for technical writing, reading notes, reflections, and life fragments.",
     overview: "Overview",
     posts: "Posts",
     labels: "Labels",
@@ -114,6 +125,13 @@ const TRANSLATIONS = {
     search: "Search",
     search_placeholder: "Search title, excerpt, or labels",
     social: "Social",
+    subscribe: "Subscribe",
+    subscribe_note: "Follow the latest updates via RSS.",
+    open_feed: "Open RSS",
+    copy_feed: "Copy feed link",
+    subscribe_hint: "Works with RSS readers and subscription tools.",
+    subscribe_copied: "Feed link copied.",
+    subscribe_copy_failed: "Copy failed. Please copy the feed URL manually.",
     friends: "Friends",
     write_in_public: "Write in public",
     live_reading_space: "Live reading space",
@@ -449,6 +467,9 @@ function renderStaticI18n() {
     "aria-label",
     state.locale === "en" ? "Close reading panel" : "关闭阅读面板"
   );
+  if (elements.feedCopyStatus) {
+    elements.feedCopyStatus.textContent = t("subscribe_hint");
+  }
 }
 
 function renderLanguageToggle() {
@@ -683,6 +704,39 @@ function bindControls() {
   elements.langEn?.addEventListener("click", (event) => {
     event.preventDefault();
     void setLocale("en");
+  });
+
+  elements.copyFeedLink?.addEventListener("click", async () => {
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(FEED_URL);
+      } else {
+        const field = elements.feedUrl;
+        if (!field) {
+          throw new Error("feed field missing");
+        }
+        field.focus();
+        field.select();
+        field.setSelectionRange(0, field.value.length);
+        const copied = document.execCommand("copy");
+        if (!copied) {
+          throw new Error("execCommand copy failed");
+        }
+      }
+      if (elements.feedCopyStatus) {
+        elements.feedCopyStatus.textContent = t("subscribe_copied");
+      }
+    } catch {
+      const field = elements.feedUrl;
+      if (field) {
+        field.focus();
+        field.select();
+        field.setSelectionRange(0, field.value.length);
+      }
+      if (elements.feedCopyStatus) {
+        elements.feedCopyStatus.textContent = t("subscribe_copy_failed");
+      }
+    }
   });
 
   elements.drawerOverlay.addEventListener("click", closeDrawer);

@@ -1,7 +1,7 @@
 {
   "name": "PlatoJobs",
   "short_name": "PlatoJobs",
-  "description": "PlatoJobs 的个人博客，基于 GitHub Issues 写作与沉淀。",
+  "description": "PlatoJobs 的个人网站，聚合技术写作、阅读笔记、思考记录与生活片段。",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0f1419",
