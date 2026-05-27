@@ -38,6 +38,9 @@
     />
     <meta name="twitter:image" content="https://www.platojobs.com/og-card.png?v=20260527-ogpng2" />
     <meta name="twitter:image:alt" content="PlatoJobs personal website brand card" />
+    <link rel="preconnect" href="https://utteranc.es" crossorigin />
+    <link rel="preconnect" href="https://github.com" crossorigin />
+    <link rel="preload" href="https://utteranc.es/client.js" as="script" crossorigin />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -47,7 +50,7 @@
     <link rel="icon" type="image/svg+xml" href="./logo.svg?v=20260527-cat3" />
     <link rel="manifest" href="./site.webmanifest" />
     <link rel="alternate" type="application/rss+xml" title="PlatoJobs RSS" href="./feed.xml" />
-    <link rel="stylesheet" href="./styles.css?v=20260527-friends2" />
+    <link rel="stylesheet" href="./styles.css?v=20260527-readerfix1" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -239,7 +242,7 @@
       <main class="timeline-column">
         <header class="timeline-header">
           <div>
-            <p class="eyebrow" data-i18n="issue_journal">Issue Journal</p>
+            <p class="eyebrow" data-i18n="writing_archive">Writing Archive</p>
             <h1 data-i18n="article_abstract_flow">Article Abstract Flow</h1>
           </div>
           <a
@@ -285,6 +288,12 @@
           <div>
             <p class="eyebrow" data-i18n="reading_view">Reading View</p>
             <h2 class="modal-title" data-i18n="focus_mode">专注模式</h2>
+            <div class="reading-progress" aria-hidden="true">
+              <div class="reading-progress-track">
+                <span id="reading-progress-bar" class="reading-progress-bar"></span>
+              </div>
+              <span id="reading-progress-value" class="reading-progress-value">0%</span>
+            </div>
           </div>
           <button id="drawer-close" class="drawer-close" type="button" aria-label="关闭阅读面板" data-i18n="close">Close</button>
         </div>
@@ -301,16 +310,51 @@
 
         <div class="comments-card">
           <p class="eyebrow" data-i18n="comments">Comments</p>
-          <h3 data-i18n="issue_comments">Issue Comments</h3>
+          <h3 data-i18n="article_comments">Article Comments</h3>
           <p id="comments-status">
-            这里会承接当前文章对应 GitHub issue 的评论线程。
+            评论区会在这里加载，欢迎留下你的想法。
           </p>
+          <div id="comments-empty" class="comments-empty" hidden>
+            <svg class="comments-empty-visual" viewBox="0 0 120 120" aria-hidden="true">
+              <defs>
+                <linearGradient id="emptyBubble" x1="0%" x2="100%" y1="0%" y2="100%">
+                  <stop offset="0%" stop-color="#8bd3ff" stop-opacity="0.95" />
+                  <stop offset="100%" stop-color="#1d9bf0" stop-opacity="0.75" />
+                </linearGradient>
+              </defs>
+              <path
+                d="M26 30c0-7.7 6.3-14 14-14h40c7.7 0 14 6.3 14 14v26c0 7.7-6.3 14-14 14H58l-15 12.8c-2.6 2.2-6.6.3-6.6-3.1V70h-2.4c-4.4 0-8-3.6-8-8V30z"
+                fill="rgba(255,255,255,0.04)"
+                stroke="url(#emptyBubble)"
+                stroke-width="3"
+                stroke-linejoin="round"
+              />
+              <circle cx="50" cy="44" r="3.6" fill="#9fdcff" />
+              <circle cx="70" cy="44" r="3.6" fill="#9fdcff" />
+              <path
+                d="M48 58c4.2 4 15.8 4 20 0"
+                fill="none"
+                stroke="#9fdcff"
+                stroke-linecap="round"
+                stroke-width="3"
+                opacity="0.8"
+              />
+              <path
+                d="M95 84c6 0 10 4.6 10 10.4 0 5.7-4 10.3-10 10.3-2.5 0-4.9-.8-6.7-2.3L82 104l1.5-7.1c-1.4-1.8-2.2-4-2.2-6.5 0-5.8 5.4-10.4 13.7-10.4z"
+                fill="rgba(255,255,255,0.03)"
+                stroke="rgba(255,255,255,0.16)"
+                stroke-width="2"
+              />
+            </svg>
+            <p class="comments-empty-title" data-i18n="comments_empty_title">暂无评论</p>
+            <p class="comments-empty-body" data-i18n="comments_empty_body">还没有人先开口，等你留下第一条想法。</p>
+          </div>
           <div id="comments-thread" class="comments-thread" aria-live="polite"></div>
         </div>
       </div>
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="./script.js?v=20260527-friends2"></script>
+    <script src="./script.js?v=20260527-readerfix1"></script>
   </body>
 </html>

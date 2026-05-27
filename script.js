@@ -31,11 +31,14 @@ const elements = {
   seoPostLinks: document.querySelector("#seo-post-links"),
   readerShell: document.querySelector("#reader-shell"),
   commentsStatus: document.querySelector("#comments-status"),
+  commentsEmpty: document.querySelector("#comments-empty"),
   commentsThread: document.querySelector("#comments-thread"),
   drawer: document.querySelector("#reader-drawer"),
   modalShell: document.querySelector(".modal-shell"),
   drawerOverlay: document.querySelector("#drawer-overlay"),
   drawerClose: document.querySelector("#drawer-close"),
+  readingProgressBar: document.querySelector("#reading-progress-bar"),
+  readingProgressValue: document.querySelector("#reading-progress-value"),
   canonicalUrl: document.querySelector("#canonical-url"),
   metaDescription: document.querySelector("#meta-description"),
   ogTitle: document.querySelector("#og-title"),
@@ -58,6 +61,9 @@ const SITE_DESCRIPTION = "PlatoJobs 的个人网站，聚合技术写作、阅�
 const SITE_URL = "https://www.platojobs.com/";
 const FEED_URL = `${SITE_URL}feed.xml`;
 const COMMENTS_REPO = "platojobs/SFLOG";
+const ISSUE_API_BASE = `https://api.github.com/repos/${COMMENTS_REPO}/issues/`;
+const commentCountCache = new Map();
+let utterancesWarmPromise = null;
 const TRANSLATIONS = {
   zh: {
     locale: "zh-CN",
@@ -80,7 +86,7 @@ const TRANSLATIONS = {
     friends: "友情链接",
     write_in_public: "公开写作",
     live_reading_space: "在线阅读空间",
-    issue_journal: "Issue Journal",
+    writing_archive: "写作档案",
     article_abstract_flow: "文章摘要流",
     write_new_post: "写新文章",
     per_page: "每页",
@@ -93,7 +99,10 @@ const TRANSLATIONS = {
     reader_empty_title: "选择一篇文章开始阅读。",
     reader_empty_body: "列表只显示摘要，点击后在这里展开完整内容。",
     comments: "评论",
-    issue_comments: "Issue 评论",
+    article_comments: "文章评论",
+    copy_link: "复制文章链接",
+    link_copied: "文章链接已复制。",
+    link_copy_failed: "复制失败，请手动复制地址。",
     show_all: "显示全部",
     show_less: "收起",
     uncategorized: "未分类",
@@ -103,14 +112,17 @@ const TRANSLATIONS = {
     min_only: (minutes) => `${minutes} 分钟`,
     loading_article: "正在加载文章...",
     loading_article_failed: "文章加载失败。",
-    open_issue: "打开 Issue",
+    open_issue: "查看原文",
     published: "发布时间",
     updated: "更新时间",
     reading_time: "阅读时长",
     category_tags: "分类与标签",
-    comments_thread_hint: "打开文章后，这里会加载对应 issue 的评论线程。",
-    comments_thread_source: (number) => `当前评论承接自 <a href="#issue-link">GitHub Issue #${number}</a>。`,
-    comments_panel_hint: "这里会承接当前文章对应 GitHub issue 的评论线程。",
+    comments_thread_hint: "打开文章后，这里会加载对应的评论区。",
+    comments_thread_source: () => "评论区已开启，欢迎交流。",
+    comments_panel_hint: "这里会加载当前文章的评论区。",
+    comments_loading: "评论区加载中...",
+    comments_empty_title: "暂无评论",
+    comments_empty_body: "还没有人先开口，等你留下第一条想法。",
     loading_posts: "加载中...",
     loading_failed: "加载失败",
     loading_failed_body: "博客数据加载失败，请稍后重试。"
@@ -136,7 +148,7 @@ const TRANSLATIONS = {
     friends: "Friends",
     write_in_public: "Write in public",
     live_reading_space: "Live reading space",
-    issue_journal: "Issue Journal",
+    writing_archive: "Writing Archive",
     article_abstract_flow: "Article Abstract Flow",
     write_new_post: "New Post",
     per_page: "Per page",
@@ -149,7 +161,10 @@ const TRANSLATIONS = {
     reader_empty_title: "Pick an article to start reading.",
     reader_empty_body: "The list only shows abstracts. Click one to expand the full piece here.",
     comments: "Comments",
-    issue_comments: "Issue Comments",
+    article_comments: "Comments",
+    copy_link: "Copy Link",
+    link_copied: "Article link copied.",
+    link_copy_failed: "Copy failed. Please copy the URL manually.",
     show_all: "Show all",
     show_less: "Show less",
     uncategorized: "Uncategorized",
@@ -159,14 +174,17 @@ const TRANSLATIONS = {
     min_only: (minutes) => `${minutes} min`,
     loading_article: "Loading article...",
     loading_article_failed: "Failed to load article.",
-    open_issue: "Open Issue",
+    open_issue: "View Source",
     published: "Published",
     updated: "Updated",
     reading_time: "Reading Time",
     category_tags: "Category & Tags",
-    comments_thread_hint: "Open an article to load the matching issue comment thread.",
-    comments_thread_source: (number) => `Comments are synced from <a href="#issue-link">GitHub Issue #${number}</a>.`,
-    comments_panel_hint: "Comments for the current article will continue in its matching GitHub issue thread.",
+    comments_thread_hint: "Open an article to load its comment section.",
+    comments_thread_source: () => "Comments are open for this article.",
+    comments_panel_hint: "Comments for the current article will appear here.",
+    comments_loading: "Loading comments...",
+    comments_empty_title: "No comments yet",
+    comments_empty_body: "No one has started the conversation yet. You could be the first.",
     loading_posts: "Loading...",
     loading_failed: "Load failed",
     loading_failed_body: "Failed to load blog data. Please try again later."
@@ -346,6 +364,16 @@ function updateArticleJsonLd(post) {
   elements.articleJsonLd.textContent = JSON.stringify(jsonld);
 }
 
+function setReadingProgress(progress) {
+  const clamped = Math.max(0, Math.min(1, Number.isFinite(progress) ? progress : 0));
+  if (elements.readingProgressBar) {
+    elements.readingProgressBar.style.transform = `scaleX(${clamped})`;
+  }
+  if (elements.readingProgressValue) {
+    elements.readingProgressValue.textContent = `${Math.round(clamped * 100)}%`;
+  }
+}
+
 function updateSeo(post) {
   const canonical = post ? `${SITE_URL}?post=${encodeURIComponent(post.slug)}` : SITE_URL;
   const title = post ? `${post.title} | ${SITE_NAME}` : SITE_TITLE;
@@ -382,9 +410,13 @@ function closeDrawer() {
   elements.drawerOverlay.hidden = true;
   document.body.classList.remove("modal-open");
   document.body.style.overflow = "";
+  setReadingProgress(0);
 }
 
 function resetComments(message) {
+  if (elements.commentsEmpty) {
+    elements.commentsEmpty.hidden = true;
+  }
   if (elements.commentsThread) {
     elements.commentsThread.innerHTML = "";
   }
@@ -393,26 +425,130 @@ function resetComments(message) {
   }
 }
 
+async function fetchIssueCommentCount(issueNumber) {
+  if (commentCountCache.has(issueNumber)) {
+    return commentCountCache.get(issueNumber);
+  }
+  const response = await fetch(`${ISSUE_API_BASE}${issueNumber}`);
+  if (!response.ok) {
+    throw new Error(`Issue API failed: ${response.status}`);
+  }
+  const issue = await response.json();
+  const count = Number(issue?.comments ?? 0);
+  commentCountCache.set(issueNumber, count);
+  return count;
+}
+
+function warmUtterancesScript() {
+  if (utterancesWarmPromise) return utterancesWarmPromise;
+  utterancesWarmPromise = new Promise((resolve) => {
+    const existing = document.querySelector('script[data-utterances-warm="true"]');
+    if (existing) {
+      resolve();
+      return;
+    }
+    const script = document.createElement("script");
+    script.src = "https://utteranc.es/client.js";
+    script.async = true;
+    script.crossOrigin = "anonymous";
+    script.dataset.utterancesWarm = "true";
+    script.style.display = "none";
+    script.addEventListener("load", () => resolve(), { once: true });
+    script.addEventListener("error", () => resolve(), { once: true });
+    document.head.appendChild(script);
+  });
+  return utterancesWarmPromise;
+}
+
 function renderComments(post) {
   if (!elements.commentsThread) return;
 
-  elements.commentsThread.innerHTML = "";
+  elements.commentsThread.innerHTML = `<div class="comments-loading">${escapeHtml(t("comments_loading"))}</div>`;
   if (elements.commentsStatus) {
-    elements.commentsStatus.innerHTML = t("comments_thread_source", post.number).replace(
-      'href="#issue-link"',
-      `href="${post.issueUrl}" target="_blank" rel="noreferrer"`
-    );
+    elements.commentsStatus.textContent = t("comments_loading");
   }
 
-  const script = document.createElement("script");
-  script.src = "https://utteranc.es/client.js";
-  script.async = true;
-  script.crossOrigin = "anonymous";
-  script.setAttribute("repo", COMMENTS_REPO);
-  script.setAttribute("issue-number", String(post.number));
-  script.setAttribute("theme", "github-dark");
-  script.setAttribute("loading", "lazy");
-  elements.commentsThread.appendChild(script);
+  const cleanupPlaceholder = () => {
+    elements.commentsThread?.querySelectorAll(".comments-loading").forEach((node) => node.remove());
+    if (elements.commentsStatus) {
+      elements.commentsStatus.textContent = t("comments_thread_source");
+    }
+  };
+
+  const hasRenderedComments = () =>
+    Boolean(
+      elements.commentsThread?.querySelector(".utterances, .utterances-frame, iframe")
+    );
+
+  const observer = new MutationObserver(() => {
+    if (hasRenderedComments()) {
+      cleanupPlaceholder();
+      observer.disconnect();
+    }
+  });
+  observer.observe(elements.commentsThread, { childList: true, subtree: true });
+
+  const mountUtterances = () => {
+    const script = document.createElement("script");
+    script.src = "https://utteranc.es/client.js";
+    script.async = true;
+    script.crossOrigin = "anonymous";
+    script.setAttribute("repo", COMMENTS_REPO);
+    script.setAttribute("issue-number", String(post.number));
+    script.setAttribute("theme", "github-dark");
+    script.addEventListener("load", () => {
+      window.setTimeout(() => {
+        if (hasRenderedComments()) {
+          cleanupPlaceholder();
+        }
+      }, 120);
+    });
+    elements.commentsThread.appendChild(script);
+  };
+
+  void warmUtterancesScript().finally(mountUtterances);
+
+  let attempts = 0;
+  const timer = window.setInterval(() => {
+    attempts += 1;
+    if (hasRenderedComments()) {
+      cleanupPlaceholder();
+      observer.disconnect();
+      window.clearInterval(timer);
+      return;
+    }
+    if (attempts >= 40) {
+      window.clearInterval(timer);
+    }
+  }, 250);
+
+  window.setTimeout(() => {
+    void fetchIssueCommentCount(post.number)
+      .then((count) => {
+        if (elements.commentsEmpty) {
+          elements.commentsEmpty.hidden = count !== 0;
+        }
+      })
+      .catch(() => {
+        if (elements.commentsEmpty) {
+          elements.commentsEmpty.hidden = true;
+        }
+      });
+  }, 900);
+}
+
+function updateReadingProgressFromScroll() {
+  const container = elements.modalShell;
+  const article = elements.readerShell?.querySelector(".article-layout");
+  if (!container || !article) {
+    setReadingProgress(0);
+    return;
+  }
+
+  const start = article.offsetTop;
+  const distance = Math.max(1, article.scrollHeight - container.clientHeight * 0.72);
+  const current = container.scrollTop - start;
+  setReadingProgress(current / distance);
 }
 
 function startBrandTyping() {
@@ -605,7 +741,6 @@ function renderPosts() {
         <article class="post-card${activeClass}" data-slug="${escapeHtml(post.slug)}">
           <div class="post-top">
             <span class="post-category" style="${getLabelStyleAttr(category)}">${escapeHtml(category)}</span>
-            <span class="post-number">#${post.number}</span>
           </div>
           <h3>${escapeHtml(post.title)}</h3>
           <p class="post-summary">${escapeHtml(post.excerpt)}</p>
@@ -628,6 +763,57 @@ function renderPosts() {
   });
 }
 
+function enhanceArticleMarkup(html) {
+  const template = document.createElement("template");
+  template.innerHTML = html;
+  const root = template.content;
+
+  const leadParagraph = Array.from(root.children).find(
+    (node) => node.tagName === "P" && node.textContent.trim().length > 0
+  );
+  if (leadParagraph) {
+    leadParagraph.classList.add("article-lead");
+  }
+
+  root.querySelectorAll("table").forEach((table) => {
+    if (table.parentElement?.classList.contains("article-table-wrap")) return;
+    const wrap = document.createElement("div");
+    wrap.className = "article-table-wrap";
+    table.parentNode.insertBefore(wrap, table);
+    wrap.appendChild(table);
+  });
+
+  root.querySelectorAll("img").forEach((img) => {
+    const parent = img.parentElement;
+    if (
+      parent?.tagName === "P" &&
+      parent.childNodes.length === 1 &&
+      parent.textContent.trim() === ""
+    ) {
+      const figure = document.createElement("figure");
+      figure.className = "article-figure";
+      parent.parentNode.insertBefore(figure, parent);
+      figure.appendChild(img);
+      if (img.alt?.trim()) {
+        const caption = document.createElement("figcaption");
+        caption.textContent = img.alt.trim();
+        figure.appendChild(caption);
+      }
+      parent.remove();
+    }
+  });
+
+  root.querySelectorAll("a[href]").forEach((link) => {
+    const href = link.getAttribute("href") || "";
+    if (/^https?:\/\//i.test(href)) {
+      link.setAttribute("target", "_blank");
+      link.setAttribute("rel", "noreferrer");
+    }
+  });
+
+  return template.innerHTML;
+}
+
 async function renderArticle(post) {
   elements.modalShell?.scrollTo({ top: 0, behavior: "auto" });
   elements.readerShell.innerHTML = `<div class="loading-state">${escapeHtml(t("loading_article"))}</div>`;
@@ -638,7 +824,7 @@ async function renderArticle(post) {
   }
 
   const markdown = await response.text();
-  const html = marked.parse(markdown);
+  const html = enhanceArticleMarkup(marked.parse(markdown));
   const category = getCategory(post);
   const tags = getTags(post)
     .map(
@@ -650,29 +836,31 @@ async function renderArticle(post) {
     <article class="article-layout">
       <header class="article-hero">
         <div class="article-hero-copy">
-          <p class="eyebrow">Issue #${post.number}</p>
+          <p class="eyebrow">${formatDate(post.createdAt)}</p>
           <h2 class="article-title">${escapeHtml(post.title)}</h2>
-          <p class="article-subtitle">${escapeHtml(post.excerpt)}</p>
         </div>
         <div class="article-actions">
           <a class="article-link" href="${post.issueUrl}" target="_blank" rel="noreferrer">${escapeHtml(t("open_issue"))}</a>
+          <button class="article-link article-link-secondary" id="copy-article-link" type="button">${escapeHtml(t("copy_link"))}</button>
         </div>
       </header>
 
       <section class="article-meta-panel">
-        <div class="meta-group">
-          <span class="meta-label">${escapeHtml(t("published"))}</span>
-          <strong>${formatDate(post.createdAt)}</strong>
+        <div class="article-meta-strip" role="list">
+          <div class="meta-group" role="listitem">
+            <span class="meta-label">${escapeHtml(t("published"))}</span>
+            <strong>${formatDate(post.createdAt)}</strong>
+          </div>
+          <div class="meta-group" role="listitem">
+            <span class="meta-label">${escapeHtml(t("updated"))}</span>
+            <strong>${formatDate(post.updatedAt)}</strong>
+          </div>
+          <div class="meta-group" role="listitem">
+            <span class="meta-label">${escapeHtml(t("reading_time"))}</span>
+            <strong>${escapeHtml(t("min_only", post.readingTime))}</strong>
+          </div>
         </div>
-        <div class="meta-group">
-          <span class="meta-label">${escapeHtml(t("updated"))}</span>
-          <strong>${formatDate(post.updatedAt)}</strong>
-        </div>
-        <div class="meta-group">
-          <span class="meta-label">${escapeHtml(t("reading_time"))}</span>
-          <strong>${escapeHtml(t("min_only", post.readingTime))}</strong>
-        </div>
-        <div class="meta-group meta-group-wide">
+        <div class="meta-group meta-group-wide article-tag-row">
           <span class="meta-label">${escapeHtml(t("category_tags"))}</span>
           <div class="article-tags">
             <span class="post-category" style="${getLabelStyleAttr(category)}">${escapeHtml(category)}</span>
@@ -687,8 +875,33 @@ async function renderArticle(post) {
     </article>
   `;
 
+  document.querySelector("#copy-article-link")?.addEventListener("click", async () => {
+    const articleUrl = `${SITE_URL}?post=${encodeURIComponent(post.slug)}&lang=${state.locale}`;
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(articleUrl);
+      } else {
+        const textarea = document.createElement("textarea");
+        textarea.value = articleUrl;
+        textarea.style.position = "absolute";
+        textarea.style.left = "-9999px";
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        textarea.remove();
+      }
+      if (elements.commentsStatus) {
+        elements.commentsStatus.textContent = t("link_copied");
+      }
+    } catch {
+      if (elements.commentsStatus) {
+        elements.commentsStatus.textContent = t("link_copy_failed");
+      }
+    }
+  });
+
   elements.modalShell?.scrollTo({ top: 0, behavior: "auto" });
-  renderComments(post);
+  updateReadingProgressFromScroll();
 }
 
 async function openPost(slug) {
@@ -699,6 +912,7 @@ async function openPost(slug) {
   updateSeo(post);
   renderPosts();
   openDrawer();
+  renderComments(post);
   await renderArticle(post);
 }
 
@@ -786,6 +1000,9 @@ function bindControls() {
 
   elements.drawerOverlay.addEventListener("click", closeDrawer);
   elements.drawerClose.addEventListener("click", closeDrawer);
+  elements.modalShell?.addEventListener("scroll", updateReadingProgressFromScroll, {
+    passive: true
+  });
   window.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
       closeDrawer();
