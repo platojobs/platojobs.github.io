@@ -108,7 +108,15 @@
 
         <div class="rail-card">
           <p class="rail-label">Labels</p>
-          <div id="label-filters" class="label-filters"></div>
+          <div id="label-filters" class="label-filters is-collapsed-mobile"></div>
+          <button
+            id="labels-toggle"
+            class="labels-toggle"
+            type="button"
+            aria-expanded="false"
+          >
+            Show all
+          </button>
         </div>
 
         <div class="rail-card">
@@ -140,7 +148,7 @@
 
         <div class="rail-card">
           <p class="rail-label">Friends</p>
-          <div class="friend-links">
+          <div id="friend-links" class="friend-links is-collapsed-mobile">
             <a class="friend-link" href="https://github.com/carbon-language/carbon-lang" target="_blank" rel="noreferrer">
               <span class="icon-badge" aria-hidden="true">
                 <svg viewBox="0 0 24 24" class="ui-icon"><path d="m7 7 10 10"/><path d="M17 7 7 17"/><circle cx="12" cy="12" r="9"/></svg>
@@ -177,6 +185,14 @@
               <span>Beautiful multi-platform UI toolkit</span>
             </a>
           </div>
+          <button
+            id="friends-toggle"
+            class="friends-toggle"
+            type="button"
+            aria-expanded="false"
+          >
+            Show all
+          </button>
         </div>
       </aside>
 

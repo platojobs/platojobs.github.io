@@ -5,7 +5,9 @@ const state = {
   activeSlug: "",
   search: "",
   page: 1,
-  pageSize: 8
+  pageSize: 8,
+  labelsExpanded: false,
+  friendsExpanded: false
 };
 
 const elements = {
@@ -14,6 +16,9 @@ const elements = {
   labelCount: document.querySelector("#label-count"),
   latestDate: document.querySelector("#latest-date"),
   labelFilters: document.querySelector("#label-filters"),
+  labelsToggle: document.querySelector("#labels-toggle"),
+  friendLinks: document.querySelector("#friend-links"),
+  friendsToggle: document.querySelector("#friends-toggle"),
   searchInput: document.querySelector("#search-input"),
   resultCount: document.querySelector("#result-count"),
   postList: document.querySelector("#post-list"),
@@ -22,6 +27,7 @@ const elements = {
   commentsStatus: document.querySelector("#comments-status"),
   commentsThread: document.querySelector("#comments-thread"),
   drawer: document.querySelector("#reader-drawer"),
+  modalShell: document.querySelector(".modal-shell"),
   drawerOverlay: document.querySelector("#drawer-overlay"),
   drawerClose: document.querySelector("#drawer-close"),
   canonicalUrl: document.querySelector("#canonical-url"),
@@ -153,6 +159,7 @@ function openDrawer() {
   elements.drawer.setAttribute("aria-hidden", "false");
   document.body.classList.add("modal-open");
   document.body.style.overflow = "hidden";
+  elements.modalShell?.scrollTo({ top: 0, behavior: "auto" });
 }
 
 function closeDrawer() {
@@ -295,6 +302,12 @@ function renderFilters() {
       renderPosts();
     });
   });
+
+  elements.labelFilters.classList.toggle("is-collapsed-mobile", !state.labelsExpanded);
+  if (elements.labelsToggle) {
+    elements.labelsToggle.setAttribute("aria-expanded", String(state.labelsExpanded));
+    elements.labelsToggle.textContent = state.labelsExpanded ? "Show less" : "Show all";
+  }
 }
 
 function getPagedPosts() {
@@ -369,6 +382,7 @@ function renderPosts() {
 }
 
 async function renderArticle(post) {
+  elements.modalShell?.scrollTo({ top: 0, behavior: "auto" });
   elements.readerShell.innerHTML = `<div class="loading-state">正在加载文章...</div>`;
   const response = await fetch(`./blog-content/${post.slug}.md`);
   if (!response.ok) {
@@ -426,6 +440,7 @@ async function renderArticle(post) {
     </article>
   `;
 
+  elements.modalShell?.scrollTo({ top: 0, behavior: "auto" });
   renderComments(post);
 }
 
@@ -468,6 +483,20 @@ function bindControls() {
     renderPosts();
   });
 
+  elements.friendsToggle?.addEventListener("click", () => {
+    state.friendsExpanded = !state.friendsExpanded;
+    elements.friendsToggle.setAttribute("aria-expanded", String(state.friendsExpanded));
+    elements.friendsToggle.textContent = state.friendsExpanded ? "Show less" : "Show all";
+    elements.friendLinks?.classList.toggle("is-collapsed-mobile", !state.friendsExpanded);
+  });
+
+  elements.labelsToggle?.addEventListener("click", () => {
+    state.labelsExpanded = !state.labelsExpanded;
+    elements.labelsToggle.setAttribute("aria-expanded", String(state.labelsExpanded));
+    elements.labelsToggle.textContent = state.labelsExpanded ? "Show less" : "Show all";
+    elements.labelFilters?.classList.toggle("is-collapsed-mobile", !state.labelsExpanded);
+  });
+
   elements.drawerOverlay.addEventListener("click", closeDrawer);
   elements.drawerClose.addEventListener("click", closeDrawer);
   window.addEventListener("keydown", (event) => {
@@ -499,6 +528,7 @@ async function boot() {
 
   if (initialPost) {
     if (state.activeSlug) {
+      elements.modalShell?.scrollTo({ top: 0, behavior: "auto" });
       await openPost(initialPost.slug);
     } else {
       updateSeo();
