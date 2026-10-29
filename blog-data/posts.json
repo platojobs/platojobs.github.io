@@ -1,5 +1,18 @@
 [
   {
+    "number": 355,
+    "title": "The Warmest Stranger",
+    "slug": "355-the-warmest-stranger",
+    "createdAt": "2026-10-29T03:25:02Z",
+    "updatedAt": "2026-10-29T03:25:02Z",
+    "issueUrl": "https://github.com/platojobs/SFLOG/issues/355",
+    "labels": [
+      "BookReading"
+    ],
+    "excerpt": "The Warmest Stranger In the eyes of patients, what role does a doctor actually play—a warm angel or a cold machine? For a long time after I started working, I was unable to find a ",
+    "readingTime": 15
+  },
+  {
     "number": 354,
     "title": "认知水平的人，再努力也没用",
     "slug": "354-认知水平的人-再努力也没用",
